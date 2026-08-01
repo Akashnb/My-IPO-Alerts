@@ -1,14 +1,22 @@
 """
 IPO GMP Alert Agent
 -------------------
-Checks currently OPEN Mainboard IPOs (India) and their Grey Market Premium (GMP %).
-Sends a Telegram alert (to one or more chats/channels) for every IPO with GMP >= GMP_THRESHOLD.
+Checks currently OPEN Mainboard IPOs (India) and their Grey Market Premium (GMP %),
+using TWO independent sources cross-checked against each other for reliability.
+Sends a Telegram alert to your channel for every IPO with GMP >= GMP_THRESHOLD.
 
-Data source: investorgain.com (unofficial GMP data — informational only, not investment advice)
+Sources:
+  1. investorgain.com  (JS-rendered table, read via headless browser)
+  2. ipowatch.in       (plain server-rendered HTML, read via requests)
+If one source fails or is unreachable, the script carries on with the other and
+says so in the logs. If BOTH fail, it sends a warning message instead of
+silently doing nothing, so a broken scraper doesn't go unnoticed.
+
+Data is unofficial grey-market info -- informational only, not investment advice.
 
 Run manually:
     python ipo_gmp_alert.py
-    python ipo_gmp_alert.py --debug     # prints raw scraped rows so you can fix selectors
+    python ipo_gmp_alert.py --debug     # prints raw scraped rows from both sources
 """
 
 import os
@@ -16,76 +24,157 @@ import re
 import sys
 import argparse
 import requests
+from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 
 # ---------- CONFIG ----------
-URL = "https://www.investorgain.com/report/live-ipo-gmp/331/ipo/"  # Mainboard-only GMP table
-GMP_THRESHOLD = float(os.environ.get("GMP_THRESHOLD", "10"))       # percent
+GMP_THRESHOLD = float(os.environ.get("GMP_THRESHOLD", "10"))  # percent
+MISMATCH_FLAG_THRESHOLD = 5.0  # percentage-point gap between sources worth flagging
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 # The channel's chat ID (looks like -100xxxxxxxxxx). Telegram itself keeps track
 # of who has joined the channel -- there's nothing for this script to persist.
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
+
+INVESTORGAIN_URL = "https://www.investorgain.com/report/live-ipo-gmp/331/ipo/"
+IPOWATCH_URL = "https://ipowatch.in/ipo-grey-market-premium-latest-ipo-gmp/"
 # -----------------------------
 
 
-def fetch_rows(debug=False):
-    """Load the page with a real browser (data is JS-rendered) and pull table rows as text."""
-    rows_data = []
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page(user_agent=(
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
-        ))
-        page.goto(URL, timeout=60000)
+def normalize_name(name):
+    """Loose key for matching the same IPO across two differently-formatted sources."""
+    return re.sub(r"[^a-z0-9]", "", name.lower())[:20]
 
-        # Wait for the data table to actually populate (it loads via AJAX after page load)
-        page.wait_for_selector("table tbody tr", timeout=30000)
-        page.wait_for_timeout(1500)  # small buffer for all rows to render
 
-        headers = [h.strip() for h in page.locator("table thead th").all_inner_texts()]
-        row_locators = page.locator("table tbody tr")
-        count = row_locators.count()
+# ---------- SOURCE 1: investorgain.com (JS-rendered) ----------
 
-        for i in range(count):
-            cells = row_locators.nth(i).locator("td").all_inner_texts()
-            cells = [c.strip().replace("\n", " ") for c in cells]
+def fetch_investorgain(debug=False):
+    results = []
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+            ))
+            page.goto(INVESTORGAIN_URL, timeout=60000)
+            page.wait_for_selector("table tbody tr", timeout=30000)
+            page.wait_for_timeout(1500)
+
+            row_locators = page.locator("table tbody tr")
+            count = row_locators.count()
+
+            for i in range(count):
+                cells = row_locators.nth(i).locator("td").all_inner_texts()
+                cells = [c.strip().replace("\n", " ") for c in cells]
+                if not cells:
+                    continue
+                text = " | ".join(cells)
+                if debug:
+                    print(f"[investorgain] ROW {i}: {cells}")
+
+                name = cells[0].split("IPO")[0].strip() or cells[0].strip()
+                status = next((s for s in ["Open", "Upcoming", "Close", "Listed"]
+                               if re.search(rf"\b{s}\b", text, re.IGNORECASE)), None)
+                match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
+                gmp_percent = float(match.group(1)) if match else None
+
+                results.append({"name": name, "status": status, "gmp_percent": gmp_percent})
+
+            browser.close()
+        print(f"[investorgain] scraped {len(results)} rows.")
+    except Exception as e:
+        print(f"[investorgain] FAILED: {e}")
+    return results
+
+
+# ---------- SOURCE 2: ipowatch.in (static HTML) ----------
+
+def fetch_ipowatch(debug=False):
+    results = []
+    try:
+        resp = requests.get(IPOWATCH_URL, timeout=30, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        })
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+
+        table = None
+        for t in soup.find_all("table"):
+            header_text = t.find("tr").get_text(" ", strip=True) if t.find("tr") else ""
+            if "IPO Name" in header_text or "GMP" in header_text:
+                table = t
+                break
+
+        if table is None:
+            raise ValueError("could not locate the GMP table on the page")
+
+        rows = table.find_all("tr")[1:]  # skip header row
+        for r in rows:
+            cells = [c.get_text(" ", strip=True) for c in r.find_all(["td", "th"])]
+            if not cells:
+                continue
+            text = " | ".join(cells)
             if debug:
-                print(f"ROW {i}: {cells}")
-            rows_data.append({"headers": headers, "cells": cells, "raw_text": " | ".join(cells)})
+                print(f"[ipowatch] ROW: {cells}")
 
-        browser.close()
-    return rows_data
+            name = cells[0].strip()
+            is_mainboard = bool(re.search(r"\bMainboard\b", text, re.IGNORECASE)) and not re.search(r"SME", text, re.IGNORECASE)
+            status = next((s for s in ["Open", "Upcoming", "Close", "Closed", "Listed"]
+                           if re.search(rf"\b{s}\b", text, re.IGNORECASE)), None)
+            if status == "Close":
+                status = "Closed"
+            match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
+            gmp_percent = float(match.group(1)) if match else None
+
+            results.append({
+                "name": name,
+                "status": status,
+                "gmp_percent": gmp_percent,
+                "is_mainboard": is_mainboard,
+            })
+        print(f"[ipowatch] scraped {len(results)} rows.")
+    except Exception as e:
+        print(f"[ipowatch] FAILED: {e}")
+    return results
 
 
-def parse_ipo(row):
-    """
-    Extract IPO name, status (Open/Upcoming/Close/Listed) and GMP % from a row.
-    Column layout can shift on the source site, so we match by content instead
-    of a fixed column index -- more resilient to minor site changes.
-    """
-    text = row["raw_text"]
-    cells = row["cells"]
+# ---------- CROSS-CHECK & MERGE ----------
 
-    if not cells:
-        return None
+def merge_sources(ig_rows, iw_rows):
+    merged = {}
 
-    name = cells[0].split("IPO")[0].strip() or cells[0].strip()
+    for row in ig_rows:
+        if row["status"] != "Open" or row["gmp_percent"] is None:
+            continue
+        key = normalize_name(row["name"])
+        merged[key] = {"name": row["name"], "sources": {"investorgain": row["gmp_percent"]}}
 
-    status = None
-    for s in ["Open", "Upcoming", "Close", "Listed"]:
-        if re.search(rf"\b{s}\b", text, re.IGNORECASE):
-            status = s
-            break
+    for row in iw_rows:
+        if row["status"] != "Open" or row["gmp_percent"] is None or not row.get("is_mainboard"):
+            continue
+        key = normalize_name(row["name"])
+        if key in merged:
+            merged[key]["sources"]["ipowatch"] = row["gmp_percent"]
+        else:
+            merged[key] = {"name": row["name"], "sources": {"ipowatch": row["gmp_percent"]}}
 
-    gmp_percent = None
-    match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
-    if match:
-        gmp_percent = float(match.group(1))
+    final = []
+    for item in merged.values():
+        values = list(item["sources"].values())
+        avg = sum(values) / len(values)
+        mismatch = len(values) == 2 and abs(values[0] - values[1]) >= MISMATCH_FLAG_THRESHOLD
+        final.append({
+            "name": item["name"],
+            "gmp_percent": round(avg, 2),
+            "num_sources": len(values),
+            "mismatch": mismatch,
+            "sources": item["sources"],
+        })
+    return final
 
-    return {"name": name, "status": status, "gmp_percent": gmp_percent, "raw": text}
 
+# ---------- TELEGRAM ----------
 
 def send_telegram(message):
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
@@ -107,38 +196,53 @@ def send_telegram(message):
 def build_message(hits):
     lines = [f"<b>🚀 Open Mainboard IPOs with GMP ≥ {GMP_THRESHOLD}%</b>", ""]
     for ipo in hits:
-        lines.append(f"• <b>{ipo['name']}</b> — GMP {ipo['gmp_percent']}%")
+        flag = " ⚠️ sources disagree" if ipo["mismatch"] else ""
+        src_note = "1 source" if ipo["num_sources"] == 1 else "2 sources"
+        lines.append(f"• <b>{ipo['name']}</b> — GMP {ipo['gmp_percent']}% ({src_note}){flag}")
     lines.append("")
     lines.append("⚠️ GMP is unofficial grey-market data, not investment advice. Verify before applying.")
     return "\n".join(lines)
 
 
+# ---------- MAIN ----------
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--debug", action="store_true", help="print raw scraped rows")
+    parser.add_argument("--debug", action="store_true", help="print raw scraped rows from both sources")
     args = parser.parse_args()
 
-    rows = fetch_rows(debug=args.debug)
-    parsed = [parse_ipo(r) for r in rows]
-    parsed = [p for p in parsed if p]
+    ig_rows = fetch_investorgain(debug=args.debug)
+    iw_rows = fetch_ipowatch(debug=args.debug)
+
+    if not ig_rows and not iw_rows:
+        send_telegram(
+            "⚠️ <b>IPO GMP Alert Agent</b>: both data sources failed today. "
+            "No IPO check was possible. You may want to check the source sites manually, "
+            "or the scrapers may need a small fix."
+        )
+        return
+
+    if not ig_rows:
+        print("Continuing with ipowatch.in only (investorgain unavailable).")
+    if not iw_rows:
+        print("Continuing with investorgain.com only (ipowatch unavailable).")
+
+    merged = merge_sources(ig_rows, iw_rows)
 
     if args.debug:
-        print("\n--- PARSED ---")
-        for p in parsed:
-            print(p)
+        print("\n--- MERGED ---")
+        for m in merged:
+            print(m)
 
-    open_ipos = [p for p in parsed if p["status"] == "Open"]
-    hits = [p for p in open_ipos if p["gmp_percent"] is not None and p["gmp_percent"] >= GMP_THRESHOLD]
+    hits = [m for m in merged if m["gmp_percent"] >= GMP_THRESHOLD]
     hits.sort(key=lambda x: x["gmp_percent"], reverse=True)
 
-    print(f"Found {len(open_ipos)} open mainboard IPO(s), {len(hits)} with GMP >= {GMP_THRESHOLD}%.")
+    print(f"Found {len(merged)} open mainboard IPO(s) total, {len(hits)} with GMP >= {GMP_THRESHOLD}%.")
 
     if hits:
         send_telegram(build_message(hits))
     else:
         print("No IPOs crossed the GMP threshold today. No alert sent.")
-        # Uncomment below if you want a "nothing today" ping too:
-        # send_telegram(f"No open mainboard IPOs with GMP >= {GMP_THRESHOLD}% today.")
 
 
 if __name__ == "__main__":
