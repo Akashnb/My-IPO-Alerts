@@ -1,0 +1,31 @@
+name: Daily IPO GMP Alert
+
+on:
+  schedule:
+    # 2:30 UTC = 8:00 AM IST. GitHub cron can run a few minutes late, that's normal.
+    - cron: "30 2 * * *"
+  workflow_dispatch: {}   # lets you click "Run workflow" manually on GitHub to test
+
+jobs:
+  check-ipo-gmp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Run IPO GMP alert script
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GMP_THRESHOLD: "10"
+        run: python ipo_gmp_alert.py
