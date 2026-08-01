@@ -3,7 +3,8 @@ IPO GMP Alert Agent
 -------------------
 Checks currently OPEN Mainboard IPOs (India) and their Grey Market Premium (GMP %),
 using TWO independent sources cross-checked against each other for reliability.
-Sends a Telegram alert to your channel for every IPO with GMP >= GMP_THRESHOLD.
+Sends a Telegram alert to your channel for every IPO with GMP >= GMP_THRESHOLD,
+including which day of the subscription window it is (Day 1, Day 2, Last day...).
 
 Sources:
   1. investorgain.com  (JS-rendered table, read via headless browser)
@@ -24,6 +25,7 @@ import re
 import sys
 import argparse
 import requests
+from datetime import datetime, date
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 
@@ -40,10 +42,71 @@ INVESTORGAIN_URL = "https://www.investorgain.com/report/live-ipo-gmp/331/ipo/"
 IPOWATCH_URL = "https://ipowatch.in/ipo-grey-market-premium-latest-ipo-gmp/"
 # -----------------------------
 
+DATE_RANGE_RE = re.compile(r"\b(\d{1,2})-(\d{1,2})\s+([A-Za-z]+)\b")
+
 
 def normalize_name(name):
     """Loose key for matching the same IPO across two differently-formatted sources."""
     return re.sub(r"[^a-z0-9]", "", name.lower())[:20]
+
+
+def extract_date_str(text):
+    """Pull a raw date-range string like '30-3 August' out of a row's text, if present."""
+    m = DATE_RANGE_RE.search(text)
+    return m.group(0) if m else None
+
+
+def parse_ipo_date_range(date_str, today=None):
+    """
+    Parses strings like '30-3 August' (open day - close day, close month) into
+    (open_date, close_date). Handles the window crossing a month boundary
+    (e.g. opens July 30, closes August 3). Returns None if it can't be parsed.
+    """
+    if not date_str:
+        return None
+    m = DATE_RANGE_RE.search(date_str)
+    if not m:
+        return None
+    open_day, close_day, close_month_name = m.groups()
+    open_day, close_day = int(open_day), int(close_day)
+    today = today or date.today()
+
+    try:
+        close_month = datetime.strptime(close_month_name[:3], "%b").month
+    except ValueError:
+        return None
+
+    close_year = today.year
+    if close_day >= open_day:
+        # Same month for both open and close
+        open_month, open_year = close_month, close_year
+    else:
+        # Window crosses into a new month (e.g. 30 July -> 3 August)
+        open_month = close_month - 1
+        open_year = close_year
+        if open_month == 0:
+            open_month, open_year = 12, close_year - 1
+
+    try:
+        open_date = date(open_year, open_month, open_day)
+        close_date = date(close_year, close_month, close_day)
+    except ValueError:
+        return None
+    return open_date, close_date
+
+
+def compute_day_label(date_str, today=None):
+    """Returns 'Day 1', 'Day 2', ... or 'Last day to apply' based on today's date."""
+    parsed = parse_ipo_date_range(date_str, today=today)
+    if not parsed:
+        return None
+    open_date, close_date = parsed
+    today = today or date.today()
+    if today < open_date or today > close_date:
+        return None  # date math didn't land inside the window -- skip rather than guess
+    if today == close_date:
+        return "Last day to apply"
+    return f"Day {(today - open_date).days + 1}"
 
 
 # ---------- SOURCE 1: investorgain.com (JS-rendered) ----------
@@ -76,10 +139,14 @@ def fetch_investorgain(debug=False):
                 name = cells[0].split("IPO")[0].strip() or cells[0].strip()
                 status = next((s for s in ["Open", "Upcoming", "Close", "Listed"]
                                if re.search(rf"\b{s}\b", text, re.IGNORECASE)), None)
-                match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
-                gmp_percent = float(match.group(1)) if match else None
+                gmp_match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
+                gmp_percent = float(gmp_match.group(1)) if gmp_match else None
+                date_str = extract_date_str(text)
 
-                results.append({"name": name, "status": status, "gmp_percent": gmp_percent})
+                results.append({
+                    "name": name, "status": status,
+                    "gmp_percent": gmp_percent, "date_str": date_str,
+                })
 
             browser.close()
         print(f"[investorgain] scraped {len(results)} rows.")
@@ -124,14 +191,16 @@ def fetch_ipowatch(debug=False):
                            if re.search(rf"\b{s}\b", text, re.IGNORECASE)), None)
             if status == "Close":
                 status = "Closed"
-            match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
-            gmp_percent = float(match.group(1)) if match else None
+            gmp_match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
+            gmp_percent = float(gmp_match.group(1)) if gmp_match else None
+            date_str = extract_date_str(text)
 
             results.append({
                 "name": name,
                 "status": status,
                 "gmp_percent": gmp_percent,
                 "is_mainboard": is_mainboard,
+                "date_str": date_str,
             })
         print(f"[ipowatch] scraped {len(results)} rows.")
     except Exception as e:
@@ -148,7 +217,11 @@ def merge_sources(ig_rows, iw_rows):
         if row["status"] != "Open" or row["gmp_percent"] is None:
             continue
         key = normalize_name(row["name"])
-        merged[key] = {"name": row["name"], "sources": {"investorgain": row["gmp_percent"]}}
+        merged[key] = {
+            "name": row["name"],
+            "sources": {"investorgain": row["gmp_percent"]},
+            "date_str": row.get("date_str"),
+        }
 
     for row in iw_rows:
         if row["status"] != "Open" or row["gmp_percent"] is None or not row.get("is_mainboard"):
@@ -156,8 +229,15 @@ def merge_sources(ig_rows, iw_rows):
         key = normalize_name(row["name"])
         if key in merged:
             merged[key]["sources"]["ipowatch"] = row["gmp_percent"]
+            # Prefer ipowatch's date string since its format is verified/known-good
+            if row.get("date_str"):
+                merged[key]["date_str"] = row["date_str"]
         else:
-            merged[key] = {"name": row["name"], "sources": {"ipowatch": row["gmp_percent"]}}
+            merged[key] = {
+                "name": row["name"],
+                "sources": {"ipowatch": row["gmp_percent"]},
+                "date_str": row.get("date_str"),
+            }
 
     final = []
     for item in merged.values():
@@ -167,9 +247,8 @@ def merge_sources(ig_rows, iw_rows):
         final.append({
             "name": item["name"],
             "gmp_percent": round(avg, 2),
-            "num_sources": len(values),
             "mismatch": mismatch,
-            "sources": item["sources"],
+            "day_label": compute_day_label(item.get("date_str")),
         })
     return final
 
@@ -196,9 +275,9 @@ def send_telegram(message):
 def build_message(hits):
     lines = [f"<b>🚀 Open Mainboard IPOs with GMP ≥ {GMP_THRESHOLD}%</b>", ""]
     for ipo in hits:
+        day_part = f" — {ipo['day_label']}" if ipo["day_label"] else ""
         flag = " ⚠️ sources disagree" if ipo["mismatch"] else ""
-        src_note = "1 source" if ipo["num_sources"] == 1 else "2 sources"
-        lines.append(f"• <b>{ipo['name']}</b> — GMP {ipo['gmp_percent']}% ({src_note}){flag}")
+        lines.append(f"• <b>{ipo['name']}</b> — GMP {ipo['gmp_percent']}%{day_part}{flag}")
     lines.append("")
     lines.append("⚠️ GMP is unofficial grey-market data, not investment advice. Verify before applying.")
     return "\n".join(lines)
@@ -247,3 +326,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+  

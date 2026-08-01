@@ -2,9 +2,10 @@ name: Daily IPO GMP Alert
 
 on:
   schedule:
-    # 2:30 UTC = 8:00 AM IST. GitHub cron can run a few minutes late, that's normal.
-    - cron: "30 2 * * *"
-  workflow_dispatch: {}   # lets you click "Run workflow" manually on GitHub to test
+    # 2:30 UTC = 8:00 AM IST, Monday-Friday only (markets closed Sat/Sun).
+    # workflow_dispatch below is a separate trigger, so manual runs still work any day.
+    - cron: "30 2 * * 1-5"
+  workflow_dispatch: {}   # lets you click "Run workflow" manually on GitHub any day, incl. weekends
 
 jobs:
   check-ipo-gmp:
