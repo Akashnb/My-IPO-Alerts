@@ -7,6 +7,9 @@ on:
     - cron: "30 2 * * 1-5"
   workflow_dispatch: {}   # lets you click "Run workflow" manually on GitHub any day, incl. weekends
 
+permissions:
+  contents: write   # needed so the workflow can commit state.json back to the repo
+
 jobs:
   check-ipo-gmp:
     runs-on: ubuntu-latest
@@ -30,3 +33,12 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           GMP_THRESHOLD: "10"
         run: python ipo_gmp_alert.py
+
+      - name: Save state.json back to the repo
+        run: |
+          git config user.name "ipo-gmp-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add state.json
+          git diff --staged --quiet && echo "No state changes to commit." && exit 0
+          git commit -m "Update IPO alert state [skip ci]"
+          git push
