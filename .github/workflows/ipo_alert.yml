@@ -29,3 +29,5 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           GMP_THRESHOLD: "10"
         run: python ipo_gmp_alert.py
+
+        
