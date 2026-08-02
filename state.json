@@ -5,8 +5,14 @@
   "breakage_warned": false,
   "date": "2026-08-02",
   "gmp_history": {
-    "junipergreenenergy": 1.78,
-    "mvelectrosystems": 31.29
+    "junipergreenenergy": {
+      "gmp_percent": 1.78,
+      "last_seen": "2026-08-02"
+    },
+    "mvelectrosystems": {
+      "gmp_percent": 31.29,
+      "last_seen": "2026-08-02"
+    }
   },
   "lot_size_cache": {
     "mvelectrosystems": 34
