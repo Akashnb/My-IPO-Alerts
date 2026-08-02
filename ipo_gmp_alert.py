@@ -40,6 +40,8 @@ import os
 import re
 import sys
 import json
+import time
+import html
 import argparse
 import requests
 from datetime import datetime, date
@@ -53,6 +55,15 @@ from playwright.sync_api import sync_playwright
 GMP_THRESHOLD = float(os.environ.get("GMP_THRESHOLD", "10"))  # percent
 MISMATCH_FLAG_THRESHOLD = 5.0  # percentage-point gap between sources worth flagging
 BREAKAGE_STREAK_DAYS = int(os.environ.get("BREAKAGE_STREAK_DAYS", "3"))  # consecutive zero-IPO scheduled runs before warning
+
+# Grey market premiums this far outside normal range are almost certainly a
+# parsing error (e.g. picked up the wrong number from the page), not a real
+# GMP -- reject rather than trust. Generous bounds since GMP genuinely can be
+# negative (discount) or occasionally very high for a hot IPO.
+SANE_GMP_RANGE = (-50.0, 500.0)
+
+RETRY_ATTEMPTS = 3
+RETRY_BASE_DELAY = 3  # seconds; grows linearly with each retry (3s, 6s, 9s...)
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -88,6 +99,46 @@ def extract_status(text, options):
     """Shared status-parsing logic for both scrapers -- avoids the same regex loop being copy-pasted twice."""
     status = next((s for s in options if re.search(rf"\b{s}\b", text, re.IGNORECASE)), None)
     return "Closed" if status == "Close" else status
+
+
+def sane_gmp_or_none(gmp_percent):
+    """
+    Rejects a parsed GMP% if it falls outside plausible real-world bounds.
+    This is a deliberate backstop, not a nice-to-have: investorgain.com's
+    exact table structure has never been directly verified (it's JS-rendered,
+    and none of the tools available for building this could execute JS to
+    inspect it) -- Playwright, which the live script uses, can render it, but
+    that means correctness here rests on trusting an unverified assumption.
+    A value like "4500%" or "-9000%" almost certainly means a parsing error
+    (wrong number picked up from the page), not a real GMP -- so it's
+    discarded rather than silently fed into an average or an alert.
+    """
+    if gmp_percent is None:
+        return None
+    lo, hi = SANE_GMP_RANGE
+    if lo <= gmp_percent <= hi:
+        return gmp_percent
+    print(f"[sanity-check] Rejected implausible GMP value: {gmp_percent}% (outside {lo} to {hi})")
+    return None
+
+
+def retry(fn, attempts=RETRY_ATTEMPTS, base_delay=RETRY_BASE_DELAY, label=""):
+    """
+    Retries a zero-arg callable on any exception, with linear backoff.
+    Returns the callable's result on success. On final failure, re-raises the
+    last exception -- the caller's existing try/except is what turns that
+    into a logged "[source] FAILED" rather than crashing the whole run.
+    """
+    last_exc = None
+    for attempt in range(1, attempts + 1):
+        try:
+            return fn()
+        except Exception as e:
+            last_exc = e
+            print(f"[retry] {label} attempt {attempt}/{attempts} failed: {e}")
+            if attempt < attempts:
+                time.sleep(base_delay * attempt)
+    raise last_exc
 
 
 # ---------- STATE (persisted to state.json, committed back to the repo) ----------
@@ -163,18 +214,22 @@ def fetch_lot_size(session, detail_url):
     """
     if not detail_url:
         return None
-    try:
+
+    def attempt():
         resp = session.get(detail_url, timeout=20, headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
         })
         resp.raise_for_status()
         text = BeautifulSoup(resp.text, "html.parser").get_text(" ", strip=True)
-        lot_size = extract_lot_size(text)
+        return extract_lot_size(text)
+
+    try:
+        lot_size = retry(attempt, attempts=2, label=f"lot-size ({detail_url})")
         if lot_size is None:
             print(f"[lot-size] Could not find a lot size on {detail_url}")
         return lot_size
     except Exception as e:
-        print(f"[lot-size] FAILED fetching {detail_url}: {e}")
+        print(f"[lot-size] FAILED fetching {detail_url} after 2 attempts: {e}")
         return None
 
 
@@ -265,8 +320,8 @@ def format_trend(current_gmp, previous_gmp):
 # ---------- SOURCE 1: investorgain.com (JS-rendered) ----------
 
 def fetch_investorgain(debug=False):
-    results = []
-    try:
+    def attempt():
+        results = []
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page(user_agent=(
@@ -292,7 +347,7 @@ def fetch_investorgain(debug=False):
                 name = cells[0].split("IPO")[0].strip() or cells[0].strip()
                 status = extract_status(text, ["Open", "Upcoming", "Close", "Listed"])
                 gmp_match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
-                gmp_percent = float(gmp_match.group(1)) if gmp_match else None
+                gmp_percent = sane_gmp_or_none(float(gmp_match.group(1))) if gmp_match else None
                 date_str = extract_date_str(text)
 
                 results.append({
@@ -301,17 +356,21 @@ def fetch_investorgain(debug=False):
                 })
 
             browser.close()
+        return results
+
+    try:
+        results = retry(attempt, label="investorgain")
         print(f"[investorgain] scraped {len(results)} rows.")
+        return results
     except Exception as e:
-        print(f"[investorgain] FAILED: {e}")
-    return results
+        print(f"[investorgain] FAILED after {RETRY_ATTEMPTS} attempts: {e}")
+        return []
 
 
 # ---------- SOURCE 2: ipowatch.in (static HTML) ----------
 
 def fetch_ipowatch(session, debug=False):
-    results = []
-    try:
+    def attempt():
         resp = session.get(IPOWATCH_URL, timeout=30, headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
         })
@@ -328,6 +387,7 @@ def fetch_ipowatch(session, debug=False):
         if table is None:
             raise ValueError("could not locate the GMP table on the page")
 
+        results = []
         rows = table.find_all("tr")[1:]
         for r in rows:
             cells = [c.get_text(" ", strip=True) for c in r.find_all(["td", "th"])]
@@ -341,7 +401,7 @@ def fetch_ipowatch(session, debug=False):
             is_mainboard = bool(re.search(r"\bMainboard\b", text, re.IGNORECASE)) and not re.search(r"SME", text, re.IGNORECASE)
             status = extract_status(text, ["Open", "Upcoming", "Close", "Closed", "Listed"])
             gmp_match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
-            gmp_percent = float(gmp_match.group(1)) if gmp_match else None
+            gmp_percent = sane_gmp_or_none(float(gmp_match.group(1))) if gmp_match else None
             date_str = extract_date_str(text)
 
             amounts = extract_rupee_amounts(text)
@@ -349,8 +409,6 @@ def fetch_ipowatch(session, debug=False):
             price_band = amounts[1] if len(amounts) >= 2 else None
             est_listing = amounts[2] if len(amounts) >= 3 else None
 
-            # Capture the row's own link to the IPO's detail page (used later,
-            # only for IPOs that clear the threshold, to fetch real lot size)
             link_tag = r.find("a", href=True)
             detail_url = urljoin(IPOWATCH_URL, link_tag["href"]) if link_tag else None
 
@@ -365,10 +423,15 @@ def fetch_ipowatch(session, debug=False):
                 "est_listing": est_listing,
                 "detail_url": detail_url,
             })
+        return results
+
+    try:
+        results = retry(attempt, label="ipowatch")
         print(f"[ipowatch] scraped {len(results)} rows.")
+        return results
     except Exception as e:
-        print(f"[ipowatch] FAILED: {e}")
-    return results
+        print(f"[ipowatch] FAILED after {RETRY_ATTEMPTS} attempts: {e}")
+        return []
 
 
 # ---------- CROSS-CHECK & MERGE ----------
@@ -445,7 +508,8 @@ def send_telegram(message):
 def build_message(hits):
     lines = [f"<b>🚀 Open Mainboard IPOs with GMP ≥ {GMP_THRESHOLD}%</b>", ""]
     for ipo in hits:
-        lines.append(f"<b>📌 {ipo['name']}</b>")
+        safe_name = html.escape(ipo["name"])
+        lines.append(f"<b>📌 {safe_name}</b>")
 
         gmp_line = f"• GMP: {ipo['gmp_percent']}%"
         if ipo.get("trend"):
