@@ -43,7 +43,9 @@ import json
 import argparse
 import requests
 from datetime import datetime, date
+from urllib.parse import urljoin
 from zoneinfo import ZoneInfo
+from concurrent.futures import ThreadPoolExecutor
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 
@@ -64,6 +66,13 @@ IST = ZoneInfo("Asia/Kolkata")
 
 DATE_RANGE_RE = re.compile(r"\b(\d{1,2})-(\d{1,2})\s+([A-Za-z]+)\b")
 RUPEE_RE = re.compile(r"₹\s*([\d,]+(?:\.\d+)?)")
+LOT_SIZE_PATTERNS = [
+    re.compile(r"lot size[\w\s]{0,25}?\bis (\d+)\s*shares", re.IGNORECASE),
+    re.compile(r"lot size of (\d+)\s*shares", re.IGNORECASE),
+    re.compile(r"market lot is (\d+)\s*shares", re.IGNORECASE),
+    re.compile(r"bid for a minimum of (\d+)\s*(?:equity\s*)?shares", re.IGNORECASE),
+    re.compile(r"minimum lot is (\d+)\s*shares", re.IGNORECASE),
+]
 
 
 def today_ist():
@@ -75,6 +84,12 @@ def normalize_name(name):
     return re.sub(r"[^a-z0-9]", "", name.lower())[:20]
 
 
+def extract_status(text, options):
+    """Shared status-parsing logic for both scrapers -- avoids the same regex loop being copy-pasted twice."""
+    status = next((s for s in options if re.search(rf"\b{s}\b", text, re.IGNORECASE)), None)
+    return "Closed" if status == "Close" else status
+
+
 # ---------- STATE (persisted to state.json, committed back to the repo) ----------
 
 def default_state():
@@ -82,6 +97,7 @@ def default_state():
         "date": None,           # IST date string this state block belongs to
         "alerted_ipos": [],     # normalized IPO keys already alerted today -- dedup
         "gmp_history": {},      # {ipo_key: last-seen gmp_percent} -- powers trend arrows
+        "lot_size_cache": {},   # {ipo_key: lot_size} -- never expires, lot size doesn't change per IPO
         "zero_ipo_streak": 0,   # consecutive SCHEDULED runs with 0 open mainboard IPOs found
         "breakage_warned": False,
     }
@@ -127,6 +143,58 @@ def extract_date_str(text):
 
 def extract_rupee_amounts(text):
     return [m.replace(",", "") for m in RUPEE_RE.findall(text)]
+
+
+def extract_lot_size(text):
+    for pattern in LOT_SIZE_PATTERNS:
+        m = pattern.search(text)
+        if m:
+            return int(m.group(1))
+    return None
+
+
+def fetch_lot_size(session, detail_url):
+    """
+    Fetches an individual IPO's detail page and extracts its lot size (shares
+    per application). Only called for IPOs not already in the lot-size cache
+    (see resolve_lot_sizes), so in practice this runs once per IPO ever, not
+    once per alert. Returns None (never raises) if the page or the pattern
+    isn't found -- a missing lot size degrades to a per-share profit line.
+    """
+    if not detail_url:
+        return None
+    try:
+        resp = session.get(detail_url, timeout=20, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        })
+        resp.raise_for_status()
+        text = BeautifulSoup(resp.text, "html.parser").get_text(" ", strip=True)
+        lot_size = extract_lot_size(text)
+        if lot_size is None:
+            print(f"[lot-size] Could not find a lot size on {detail_url}")
+        return lot_size
+    except Exception as e:
+        print(f"[lot-size] FAILED fetching {detail_url}: {e}")
+        return None
+
+
+def resolve_lot_sizes(new_hits, lot_size_cache, session):
+    """
+    Fills in ipo['lot_size'] for every hit, using the persisted cache first
+    (lot size never changes for a given IPO, so once known it's known forever)
+    and fetching only the ones we haven't seen before -- in parallel, since
+    each fetch is an independent HTTP request.
+    """
+    uncached = [h for h in new_hits if h["key"] not in lot_size_cache]
+    if uncached:
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            fetched = list(pool.map(lambda h: fetch_lot_size(session, h.get("detail_url")), uncached))
+        for h, lot_size in zip(uncached, fetched):
+            if lot_size:
+                lot_size_cache[h["key"]] = lot_size
+
+    for h in new_hits:
+        h["lot_size"] = lot_size_cache.get(h["key"])
 
 
 def parse_ipo_date_range(date_str, today=None):
@@ -222,8 +290,7 @@ def fetch_investorgain(debug=False):
                     print(f"[investorgain] ROW {i}: {cells}")
 
                 name = cells[0].split("IPO")[0].strip() or cells[0].strip()
-                status = next((s for s in ["Open", "Upcoming", "Close", "Listed"]
-                               if re.search(rf"\b{s}\b", text, re.IGNORECASE)), None)
+                status = extract_status(text, ["Open", "Upcoming", "Close", "Listed"])
                 gmp_match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
                 gmp_percent = float(gmp_match.group(1)) if gmp_match else None
                 date_str = extract_date_str(text)
@@ -242,10 +309,10 @@ def fetch_investorgain(debug=False):
 
 # ---------- SOURCE 2: ipowatch.in (static HTML) ----------
 
-def fetch_ipowatch(debug=False):
+def fetch_ipowatch(session, debug=False):
     results = []
     try:
-        resp = requests.get(IPOWATCH_URL, timeout=30, headers={
+        resp = session.get(IPOWATCH_URL, timeout=30, headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
         })
         resp.raise_for_status()
@@ -272,10 +339,7 @@ def fetch_ipowatch(debug=False):
 
             name = cells[0].strip()
             is_mainboard = bool(re.search(r"\bMainboard\b", text, re.IGNORECASE)) and not re.search(r"SME", text, re.IGNORECASE)
-            status = next((s for s in ["Open", "Upcoming", "Close", "Closed", "Listed"]
-                           if re.search(rf"\b{s}\b", text, re.IGNORECASE)), None)
-            if status == "Close":
-                status = "Closed"
+            status = extract_status(text, ["Open", "Upcoming", "Close", "Closed", "Listed"])
             gmp_match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
             gmp_percent = float(gmp_match.group(1)) if gmp_match else None
             date_str = extract_date_str(text)
@@ -284,6 +348,11 @@ def fetch_ipowatch(debug=False):
             gmp_rs = amounts[0] if len(amounts) >= 1 else None
             price_band = amounts[1] if len(amounts) >= 2 else None
             est_listing = amounts[2] if len(amounts) >= 3 else None
+
+            # Capture the row's own link to the IPO's detail page (used later,
+            # only for IPOs that clear the threshold, to fetch real lot size)
+            link_tag = r.find("a", href=True)
+            detail_url = urljoin(IPOWATCH_URL, link_tag["href"]) if link_tag else None
 
             results.append({
                 "name": name,
@@ -294,6 +363,7 @@ def fetch_ipowatch(debug=False):
                 "gmp_rs": gmp_rs,
                 "price_band": price_band,
                 "est_listing": est_listing,
+                "detail_url": detail_url,
             })
         print(f"[ipowatch] scraped {len(results)} rows.")
     except Exception as e:
@@ -329,6 +399,7 @@ def merge_sources(ig_rows, iw_rows, gmp_history):
         merged[key]["gmp_rs"] = row.get("gmp_rs")
         merged[key]["price_band"] = row.get("price_band")
         merged[key]["est_listing"] = row.get("est_listing")
+        merged[key]["detail_url"] = row.get("detail_url")
 
     final = []
     for key, item in merged.items():
@@ -344,6 +415,7 @@ def merge_sources(ig_rows, iw_rows, gmp_history):
             "gmp_rs": item.get("gmp_rs"),
             "price_band": item.get("price_band"),
             "est_listing": item.get("est_listing"),
+            "detail_url": item.get("detail_url"),
             "trend": format_trend(avg, gmp_history.get(key)),
             "day_label": window.get("day_label"),
             "formatted_range": window.get("formatted_range"),
@@ -384,12 +456,18 @@ def build_message(hits):
             gmp_line += " ⚠️ sources disagree"
         lines.append(gmp_line)
 
-        if ipo.get("gmp_rs") and ipo.get("price_band"):
-            profit_line = f"• Profit: ₹{ipo['gmp_rs']}/share (₹{ipo['price_band']}"
-            if ipo.get("est_listing"):
-                profit_line += f" → ₹{ipo['est_listing']}"
-            profit_line += ")"
-            lines.append(profit_line)
+        if ipo.get("price_band"):
+            lines.append(f"• Issue Price: ₹{ipo['price_band']}")
+
+        if ipo.get("total_profit") is not None:
+            lines.append(
+                f"• Total Profit: ₹{ipo['total_profit']:,.0f} "
+                f"for 1 lot ({ipo['lot_size']} shares, ₹{ipo['total_investment']:,.0f} invested)"
+            )
+        elif ipo.get("gmp_rs"):
+            # Lot size wasn't found on the detail page this run -- degrade to
+            # per-share rather than showing nothing, but say so explicitly.
+            lines.append(f"• Profit: ₹{ipo['gmp_rs']}/share (lot size unavailable, showing per-share)")
 
         if ipo.get("formatted_range") or ipo.get("day_label"):
             parts = []
@@ -414,9 +492,10 @@ def main():
 
     is_scheduled_run = os.environ.get("GITHUB_EVENT_NAME", "schedule") == "schedule"
     state = load_state()
+    session = requests.Session()  # reused across all ipowatch.in calls this run
 
     ig_rows = fetch_investorgain(debug=args.debug)
-    iw_rows = fetch_ipowatch(debug=args.debug)
+    iw_rows = fetch_ipowatch(session, debug=args.debug)
 
     if not ig_rows and not iw_rows:
         send_telegram(
@@ -472,6 +551,15 @@ def main():
           f"({skipped} already alerted today, {len(new_hits)} new).")
 
     if new_hits:
+        resolve_lot_sizes(new_hits, state["lot_size_cache"], session)
+        for h in new_hits:
+            if h["lot_size"] and h.get("gmp_rs") and h.get("price_band"):
+                h["total_profit"] = int(h["lot_size"]) * float(h["gmp_rs"])
+                h["total_investment"] = int(h["lot_size"]) * float(h["price_band"])
+            else:
+                h["total_profit"] = None
+                h["total_investment"] = None
+
         send_telegram(build_message(new_hits))
         state["alerted_ipos"] = list(already_alerted | {h["key"] for h in new_hits})
     else:
