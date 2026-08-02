@@ -44,7 +44,7 @@ import time
 import html
 import argparse
 import requests
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from urllib.parse import urljoin
 from zoneinfo import ZoneInfo
 from concurrent.futures import ThreadPoolExecutor
@@ -64,6 +64,8 @@ SANE_GMP_RANGE = (-50.0, 500.0)
 
 RETRY_ATTEMPTS = 3
 RETRY_BASE_DELAY = 3  # seconds; grows linearly with each retry (3s, 6s, 9s...)
+
+STATE_RETENTION_DAYS = int(os.environ.get("STATE_RETENTION_DAYS", "60"))  # prune history untouched this long
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -185,6 +187,61 @@ def save_state(state):
         print(f"[state] FAILED to save {STATE_FILE}: {e}")
 
 
+def get_previous_gmp(gmp_history, key):
+    """
+    Reads gmp_history entries in the current {'gmp_percent':..., 'last_seen':...}
+    format. Also tolerates the older flat-float format ({key: 29.41}) that
+    existed before pruning was added, so an existing state.json from before
+    this change doesn't break -- it just loses one day of trend continuity
+    for entries in the old format, rather than crashing.
+    """
+    entry = gmp_history.get(key)
+    if isinstance(entry, dict):
+        return entry.get("gmp_percent")
+    return None  # missing, or legacy flat-float format we don't try to interpret
+
+
+def get_cached_lot_size(lot_size_cache, key):
+    """Same backward-compatibility story as get_previous_gmp, for the lot-size cache."""
+    entry = lot_size_cache.get(key)
+    if isinstance(entry, dict):
+        return entry.get("lot_size")
+    if isinstance(entry, int):
+        return entry  # legacy format from before caching had timestamps
+    return None
+
+
+def prune_state(state, retention_days=STATE_RETENTION_DAYS):
+    """
+    Drops gmp_history/lot_size_cache entries not touched in `retention_days`.
+    An IPO that closed and listed months ago has no reason to stay in memory
+    forever -- this keeps state.json from growing without bound as more IPOs
+    pass through over time. Entries in the legacy (pre-timestamp) format are
+    left alone rather than guessed at or deleted.
+    """
+    cutoff = today_ist() - timedelta(days=retention_days)
+    removed = 0
+
+    for key in list(state["gmp_history"].keys()):
+        entry = state["gmp_history"][key]
+        if isinstance(entry, dict):
+            last_seen = entry.get("last_seen")
+            if last_seen and date.fromisoformat(last_seen) < cutoff:
+                del state["gmp_history"][key]
+                removed += 1
+
+    for key in list(state["lot_size_cache"].keys()):
+        entry = state["lot_size_cache"][key]
+        if isinstance(entry, dict):
+            cached_at = entry.get("cached_at")
+            if cached_at and date.fromisoformat(cached_at) < cutoff:
+                del state["lot_size_cache"][key]
+                removed += 1
+
+    if removed:
+        print(f"[state] Pruned {removed} entries untouched for {retention_days}+ days.")
+
+
 # ---------- Extraction helpers ----------
 
 def extract_date_str(text):
@@ -240,16 +297,16 @@ def resolve_lot_sizes(new_hits, lot_size_cache, session):
     and fetching only the ones we haven't seen before -- in parallel, since
     each fetch is an independent HTTP request.
     """
-    uncached = [h for h in new_hits if h["key"] not in lot_size_cache]
+    uncached = [h for h in new_hits if get_cached_lot_size(lot_size_cache, h["key"]) is None]
     if uncached:
         with ThreadPoolExecutor(max_workers=4) as pool:
             fetched = list(pool.map(lambda h: fetch_lot_size(session, h.get("detail_url")), uncached))
         for h, lot_size in zip(uncached, fetched):
             if lot_size:
-                lot_size_cache[h["key"]] = lot_size
+                lot_size_cache[h["key"]] = {"lot_size": lot_size, "cached_at": str(today_ist())}
 
     for h in new_hits:
-        h["lot_size"] = lot_size_cache.get(h["key"])
+        h["lot_size"] = get_cached_lot_size(lot_size_cache, h["key"])
 
 
 def parse_ipo_date_range(date_str, today=None):
@@ -479,7 +536,7 @@ def merge_sources(ig_rows, iw_rows, gmp_history):
             "price_band": item.get("price_band"),
             "est_listing": item.get("est_listing"),
             "detail_url": item.get("detail_url"),
-            "trend": format_trend(avg, gmp_history.get(key)),
+            "trend": format_trend(avg, get_previous_gmp(gmp_history, key)),
             "day_label": window.get("day_label"),
             "formatted_range": window.get("formatted_range"),
         })
@@ -567,6 +624,7 @@ def main():
             "No IPO check was possible. You may want to check the source sites manually, "
             "or the scrapers may need a small fix."
         )
+        prune_state(state)
         save_state(state)
         return
 
@@ -601,7 +659,7 @@ def main():
 
     # --- Update GMP history for every open mainboard IPO seen today (powers tomorrow's trend) ---
     for m in merged:
-        state["gmp_history"][m["key"]] = m["gmp_percent"]
+        state["gmp_history"][m["key"]] = {"gmp_percent": m["gmp_percent"], "last_seen": str(today_ist())}
 
     # --- Threshold filter + same-day dedup ---
     hits = [m for m in merged if m["gmp_percent"] >= GMP_THRESHOLD]
@@ -629,6 +687,7 @@ def main():
     else:
         print("No new IPOs to alert (either none crossed the threshold, or all were already sent today).")
 
+    prune_state(state)
     save_state(state)
 
 
