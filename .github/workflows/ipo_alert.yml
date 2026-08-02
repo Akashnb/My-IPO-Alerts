@@ -5,10 +5,21 @@ on:
     # 2:30 UTC = 8:00 AM IST, Monday-Friday only (markets closed Sat/Sun).
     # workflow_dispatch below is a separate trigger, so manual runs still work any day.
     - cron: "30 2 * * 1-5"
-  workflow_dispatch: {}   # lets you click "Run workflow" manually on GitHub any day, incl. weekends
+  workflow_dispatch:
+    inputs:
+      force_resend:
+        description: "Force resend today's alerts even if already sent (for testing)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write   # needed so the workflow can commit state.json back to the repo
+
+# If a manual run and the scheduled run ever overlap, this queues the second
+# one instead of letting both run at once and race to commit state.json.
+concurrency:
+  group: ipo-gmp-alert
+  cancel-in-progress: false
 
 jobs:
   check-ipo-gmp:
@@ -32,6 +43,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           GMP_THRESHOLD: "10"
+          FORCE_RESEND: ${{ github.event.inputs.force_resend }}
         run: python ipo_gmp_alert.py
 
       - name: Save state.json back to the repo

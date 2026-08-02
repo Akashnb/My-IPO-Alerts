@@ -666,7 +666,12 @@ def main():
     hits.sort(key=lambda x: x["gmp_percent"], reverse=True)
 
     already_alerted = set(state["alerted_ipos"])
-    new_hits = [h for h in hits if h["key"] not in already_alerted]
+    force_resend = os.environ.get("FORCE_RESEND", "false").lower() == "true"
+    if force_resend:
+        print("[dedup] FORCE_RESEND is on -- ignoring today's already-alerted list for this run.")
+        new_hits = hits
+    else:
+        new_hits = [h for h in hits if h["key"] not in already_alerted]
     skipped = len(hits) - len(new_hits)
 
     print(f"Found {len(merged)} open mainboard IPO(s) total, {len(hits)} with GMP >= {GMP_THRESHOLD}% "
