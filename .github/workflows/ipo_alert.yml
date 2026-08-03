@@ -2,21 +2,28 @@ name: Daily IPO GMP Alert
 
 on:
   schedule:
-    # 2:30 UTC = 8:00 AM IST, Monday-Friday only (markets closed Sat/Sun).
-    # workflow_dispatch below is a separate trigger, so manual runs still work any day.
-    - cron: "30 2 * * 1-5"
+    # 2:37 UTC = ~8:07 AM IST, Monday-Friday only (markets closed Sat/Sun).
+    # Deliberately an odd minute (37, not 30/00) -- GitHub's own docs note that
+    # popular times like exact half-hours get more queued/delayed/dropped due
+    # to congestion across all of GitHub's scheduled workflows landing at once.
+    - cron: "37 2 * * 1-5"
   workflow_dispatch:
     inputs:
       force_resend:
         description: "Force resend today's alerts even if already sent (for testing)"
         type: boolean
         default: false
+  # Backup trigger, independent of GitHub's own scheduler. An external free
+  # cron service (cron-job.org) pings this via the GitHub API every weekday
+  # morning. If the schedule above ever misfires, this still fires the run --
+  # and if BOTH fire the same day, the concurrency lock queues the second one
+  # and same-day dedup in the script prevents a duplicate alert either way.
+  repository_dispatch:
+    types: [ipo-alert-trigger]
 
 permissions:
   contents: write   # needed so the workflow can commit state.json back to the repo
 
-# If a manual run and the scheduled run ever overlap, this queues the second
-# one instead of letting both run at once and race to commit state.json.
 concurrency:
   group: ipo-gmp-alert
   cancel-in-progress: false
