@@ -2,11 +2,13 @@ name: Daily IPO GMP Alert
 
 on:
   schedule:
-    # 2:37 UTC = ~8:07 AM IST, Monday-Friday only (markets closed Sat/Sun).
-    # Deliberately an odd minute (37, not 30/00) -- GitHub's own docs note that
-    # popular times like exact half-hours get more queued/delayed/dropped due
-    # to congestion across all of GitHub's scheduled workflows landing at once.
-    - cron: "37 2 * * 1-5"
+    # 23:33 UTC = ~5:03 AM IST the next day. Since IST is UTC+5:30, a morning
+    # IST time falls on the PREVIOUS calendar day in UTC -- so to cover IST
+    # Monday-Friday, the UTC weekday range is Sunday-Thursday (0-4), not 1-5.
+    # Example: IST Monday ~5 AM = UTC Sunday 23:33.
+    # Minute deliberately off :30/:00 -- GitHub's docs note popular times like
+    # exact half-hours get more queued/delayed/dropped from congestion.
+    - cron: "33 23 * * 0-4"
   workflow_dispatch:
     inputs:
       force_resend:
