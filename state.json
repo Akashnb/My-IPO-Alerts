@@ -1,8 +1,14 @@
 {
-  "alerted_ipos": [],
+  "alerted_ipos": [
+    "ardeeindustries"
+  ],
   "breakage_warned": false,
   "date": "2026-08-05",
   "gmp_history": {
+    "ardeeindustries": {
+      "gmp_percent": 15.09,
+      "last_seen": "2026-08-05"
+    },
     "junipergreenenergy": {
       "gmp_percent": 0.89,
       "last_seen": "2026-08-03"
@@ -13,6 +19,10 @@
     }
   },
   "lot_size_cache": {
+    "ardeeindustries": {
+      "cached_at": "2026-08-05",
+      "lot_size": 281
+    },
     "mvelectrosystems": 34
   },
   "zero_ipo_streak": 1
