@@ -1,9 +1,7 @@
 {
-  "alerted_ipos": [
-    "mvelectrosystems"
-  ],
+  "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-08-03",
+  "date": "2026-08-05",
   "gmp_history": {
     "junipergreenenergy": {
       "gmp_percent": 0.89,
@@ -17,5 +15,5 @@
   "lot_size_cache": {
     "mvelectrosystems": 34
   },
-  "zero_ipo_streak": 0
+  "zero_ipo_streak": 1
 }
