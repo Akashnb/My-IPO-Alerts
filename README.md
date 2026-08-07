@@ -4,6 +4,20 @@
 
 ---
 
+> ### 🙋 Just want the alerts? No setup needed!
+>
+> If you simply want **daily updates on IPOs with GMP ≥ 10%** and don't want to
+> set up anything yourself, just join my channel directly — it's already running:
+>
+> ## 👉 [**Join @my_ipo_alerts on Telegram**](https://t.me/my_ipo_alerts) 👈
+>
+> 🔔 No setup, no code, no GitHub account — just tap join and you're done.
+>
+> *Want to run your own copy instead (your own bot, your own channel, your own
+> control)? Keep reading — the full setup guide is below.* ⬇️
+
+---
+
 ## ✨ What this does
 
 This agent runs automatically every morning, checks currently **open Mainboard IPOs**
@@ -229,6 +243,9 @@ no code changes needed. ✏️
 
 Standard setup: **one Telegram Channel** (created in Step 2️⃣ above). You post
 alerts to the channel; friends join via a single invite link; that's it.
+
+> 💬 Don't want to run your own instance? Your friends can just join
+> [**@my_ipo_alerts**](https://t.me/my_ipo_alerts) directly instead — no setup required.
 
 > When a friend joins the channel, Telegram remembers them permanently on their
 > servers. There's no database, no member list, and nothing here that can lose
