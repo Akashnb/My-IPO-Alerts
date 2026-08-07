@@ -2,12 +2,12 @@ name: Daily IPO GMP Alert
 
 on:
   schedule:
-    # 1:40 UTC = 7:10 AM IST. Since IST is UTC+5:30, and 7:10 AM IST minus 5:30
-    # stays within the same UTC calendar day (1:40 UTC, no rollover), the weekday
+    # 2:40 UTC = 8:10 AM IST. Since IST is UTC+5:30, and 8:10 AM IST minus 5:30
+    # stays within the same UTC calendar day (2:40 UTC, no rollover), the weekday
     # range maps directly: IST Monday-Friday = UTC Monday-Friday (1-5).
     # Minute deliberately off :30/:00 -- GitHub's docs note popular times like
     # exact half-hours get more queued/delayed/dropped from congestion.
-    - cron: "40 1 * * 1-5"
+    - cron: "40 2 * * 1-5"
   workflow_dispatch:
     inputs:
       force_resend:
