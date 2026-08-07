@@ -87,14 +87,102 @@ Never put your bot token directly in the code. Instead:
 
 ## Step 6 — Let it run automatically
 
-That's it — nothing else to do. The workflow is scheduled for **2:30 AM UTC = 8:00 AM IST**
-every day (`.github/workflows/ipo_alert.yml`). GitHub's cron can run a few minutes late
-during busy periods; that's normal and not something you can control on the free tier.
+That's it — nothing else to do for a basic setup. The workflow is scheduled in
+`.github/workflows/ipo_alert.yml` via a `cron:` line, in **UTC**, format
+`minute hour day month weekday`. GitHub's own scheduler can run a few minutes
+late during busy periods, and — more importantly — **can occasionally skip a
+run entirely with no error and no notification**, especially at popular times
+like exact hours or half-hours. That's a known limitation of GitHub's free
+scheduler, not a bug in this repo. Step 7 below shows how to add a free,
+independent backup so a missed GitHub-side trigger doesn't mean a missed alert.
 
-To change the time: edit the `cron: "30 2 * * *"` line.
-Format is `minute hour day month weekday`, always in **UTC**. Example: for 7:30 AM IST use `"0 2 * * *"`.
+To change the time: edit the `cron` line. Example: for 7:30 AM IST use `"0 2 * * *"`
+(remember IST is UTC+5:30, so subtract 5:30 from your target IST time to get the UTC value).
 
 To change the GMP threshold: edit `GMP_THRESHOLD: "10"` in the same file.
+
+---
+
+## Step 7 — Add a free backup trigger (recommended)
+
+GitHub's scheduler is best-effort — it can silently drop a run under load. This
+repo's workflow already listens for a second trigger type, `repository_dispatch`,
+specifically so you can "ping" it from an outside service as a safety net. If
+GitHub's own schedule fires, great; if it doesn't, this backup fires the same
+workflow instead. The workflow's built-in same-day dedup logic makes sure you
+never get two alerts even if both triggers fire on the same day.
+
+This uses **cron-job.org**, a free external cron service — no code changes needed.
+
+### 7a. Create a GitHub Personal Access Token
+
+1. GitHub → your profile picture (top right) → **Settings**
+2. Left sidebar, scroll to the bottom → **Developer settings**
+3. **Personal access tokens → Tokens (classic)**
+4. **Generate new token → Generate new token (classic)**
+5. Fill in:
+   - **Note:** `cron-job-org-ipo-trigger`
+   - **Expiration:** 90 days (or longer — you'll just need to repeat this step when it expires)
+   - **Scopes:** check **repo** only (leave `workflow` unchecked — it's not needed for this)
+6. Click **Generate token**, then **copy the token immediately** (starts with `ghp_`) —
+   GitHub only shows it once.
+
+### 7b. Create a free cron-job.org account
+
+1. Go to [cron-job.org](https://cron-job.org) → **Sign up** → verify your email → log in.
+
+### 7c. Create the cron job
+
+1. Click **Cronjobs → Create cronjob**
+2. **Title:** `IPO GMP Alert Trigger`
+3. **Address (URL):**
+   ```
+   https://api.github.com/repos/OWNER/REPO/dispatches
+   ```
+   Replace `OWNER` and `REPO` with your actual GitHub username and repo name
+   (visible in your repo's URL).
+4. **Execution schedule:** select **Custom**, and enter your schedule as a
+   crontab expression, a few minutes *before* your main GitHub `cron:` time so
+   it acts as an early backup. Example: if your GitHub workflow runs at
+   `"40 2 * * 1-5"` (8:10 AM IST, weekdays), set this to:
+   ```
+   35 2 * * 1-5
+   ```
+   Weekday numbers: 1=Monday ... 5=Friday. Check the **Next executions** panel
+   on the right to confirm it lists only weekdays at the right UTC time.
+5. Go to the **Advanced** tab:
+   - **Time zone:** leave as **UTC** (this must match how you calculated the schedule above)
+   - **Request method:** change to **POST**
+   - **Request body:** paste exactly:
+     ```json
+     {"event_type": "ipo-alert-trigger"}
+     ```
+   - **Headers → + ADD**, three times, to add:
+
+     | Name | Value |
+     |---|---|
+     | `Authorization` | `Bearer ghp_YOUR_TOKEN_HERE` |
+     | `Accept` | `application/vnd.github+json` |
+     | `Content-Type` | `application/json` |
+
+     (Use your real token from Step 7a in place of `ghp_YOUR_TOKEN_HERE`.)
+6. Save the job.
+
+### 7d. Test it now
+
+1. On the job's page, click **Run now** (or the ▶ icon).
+2. Check the job's execution history — you want a **204** status (success).
+3. Go to your GitHub repo → **Actions** tab → you should see a new run appear,
+   triggered via `repository_dispatch`.
+
+Once that test run succeeds, you're done — this fires automatically every
+scheduled morning going forward, independent of GitHub's own scheduler.
+
+**Note:** your GitHub workflow's `.yml` file must already have a
+`repository_dispatch` trigger block listening for the same `event_type` you
+used above (`ipo-alert-trigger`) for this to work. This repo's `ipo_alert.yml`
+includes it already, so no code changes are needed — this step is purely
+external configuration.
 
 ---
 
@@ -127,6 +215,9 @@ alerts to the channel; friends join via a single invite link; that's it.
 - **Only Mainboard IPOs** are checked (SME excluded), per your request.
 - **Free tier limits:** public GitHub repos get unlimited Actions minutes for this kind of
   scheduled job; this script takes well under a minute to run, so you're nowhere close to any limit even on a private repo.
+- **GitHub's scheduler is best-effort.** It can be delayed or occasionally skip a
+  scheduled run entirely under load, with no error shown anywhere. Step 7's backup
+  trigger is the fix for this — free, and requires no code changes.
 
 ## Optional upgrades (not required)
 
