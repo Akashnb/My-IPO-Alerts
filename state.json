@@ -1,21 +1,30 @@
 {
   "alerted_ipos": [
-    "ardeeindustries"
+    "ardeeindustries",
+    "leapindia"
   ],
   "breakage_warned": false,
-  "date": "2026-08-06",
+  "date": "2026-08-07",
   "gmp_history": {
     "ardeeindustries": {
       "gmp_percent": 28.3,
-      "last_seen": "2026-08-06"
+      "last_seen": "2026-08-07"
     },
     "junipergreenenergy": {
       "gmp_percent": 0.89,
       "last_seen": "2026-08-03"
     },
+    "leapindia": {
+      "gmp_percent": 12.57,
+      "last_seen": "2026-08-07"
+    },
     "mvelectrosystems": {
       "gmp_percent": 27.06,
       "last_seen": "2026-08-03"
+    },
+    "technocraftventures": {
+      "gmp_percent": 7.55,
+      "last_seen": "2026-08-07"
     }
   },
   "lot_size_cache": {
