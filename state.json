@@ -1,40 +1,39 @@
 {
   "alerted_ipos": [
-    "dhoottransmission",
-    "leapindia",
     "technocraftventures",
+    "dhoottransmission",
     "molbiodiagnostics"
   ],
   "breakage_warned": false,
-  "date": "2026-08-10",
+  "date": "2026-08-11",
   "gmp_history": {
     "ardeeindustries": {
       "gmp_percent": 28.3,
       "last_seen": "2026-08-07"
     },
     "dhoottransmission": {
-      "gmp_percent": 29.74,
-      "last_seen": "2026-08-10"
+      "gmp_percent": 28.7,
+      "last_seen": "2026-08-11"
     },
     "junipergreenenergy": {
       "gmp_percent": 0.89,
       "last_seen": "2026-08-03"
     },
     "leapindia": {
-      "gmp_percent": 10.06,
-      "last_seen": "2026-08-10"
+      "gmp_percent": 8.18,
+      "last_seen": "2026-08-11"
     },
     "molbiodiagnostics": {
-      "gmp_percent": 16.36,
-      "last_seen": "2026-08-10"
+      "gmp_percent": 15.74,
+      "last_seen": "2026-08-11"
     },
     "mvelectrosystems": {
       "gmp_percent": 27.06,
       "last_seen": "2026-08-03"
     },
     "technocraftventures": {
-      "gmp_percent": 10.85,
-      "last_seen": "2026-08-10"
+      "gmp_percent": 14.15,
+      "last_seen": "2026-08-11"
     }
   },
   "lot_size_cache": {
