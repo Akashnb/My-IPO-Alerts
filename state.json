@@ -1,19 +1,25 @@
 {
   "alerted_ipos": [
-    "technocraftventures",
     "dhoottransmission",
+    "beharilalengineering",
+    "shiprocket",
+    "milkymist",
     "molbiodiagnostics"
   ],
   "breakage_warned": false,
-  "date": "2026-08-11",
+  "date": "2026-08-12",
   "gmp_history": {
     "ardeeindustries": {
       "gmp_percent": 28.3,
       "last_seen": "2026-08-07"
     },
+    "beharilalengineering": {
+      "gmp_percent": 23.51,
+      "last_seen": "2026-08-12"
+    },
     "dhoottransmission": {
-      "gmp_percent": 28.7,
-      "last_seen": "2026-08-11"
+      "gmp_percent": 29.28,
+      "last_seen": "2026-08-12"
     },
     "junipergreenenergy": {
       "gmp_percent": 0.89,
@@ -23,13 +29,21 @@
       "gmp_percent": 8.18,
       "last_seen": "2026-08-11"
     },
+    "milkymist": {
+      "gmp_percent": 16.42,
+      "last_seen": "2026-08-12"
+    },
     "molbiodiagnostics": {
-      "gmp_percent": 15.74,
-      "last_seen": "2026-08-11"
+      "gmp_percent": 17.1,
+      "last_seen": "2026-08-12"
     },
     "mvelectrosystems": {
       "gmp_percent": 27.06,
       "last_seen": "2026-08-03"
+    },
+    "shiprocket": {
+      "gmp_percent": 30.93,
+      "last_seen": "2026-08-12"
     },
     "technocraftventures": {
       "gmp_percent": 14.15,
@@ -41,6 +55,10 @@
       "cached_at": "2026-08-05",
       "lot_size": 281
     },
+    "beharilalengineering": {
+      "cached_at": "2026-08-12",
+      "lot_size": 52
+    },
     "dhoottransmission": {
       "cached_at": "2026-08-10",
       "lot_size": 17
@@ -49,11 +67,19 @@
       "cached_at": "2026-08-10",
       "lot_size": 94
     },
+    "milkymist": {
+      "cached_at": "2026-08-12",
+      "lot_size": 107
+    },
     "molbiodiagnostics": {
       "cached_at": "2026-08-10",
       "lot_size": 18
     },
     "mvelectrosystems": 34,
+    "shiprocket": {
+      "cached_at": "2026-08-12",
+      "lot_size": 154
+    },
     "technocraftventures": {
       "cached_at": "2026-08-10",
       "lot_size": 70
