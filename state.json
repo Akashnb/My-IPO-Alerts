@@ -1,21 +1,19 @@
 {
   "alerted_ipos": [
-    "dhoottransmission",
     "beharilalengineering",
-    "shiprocket",
     "milkymist",
-    "molbiodiagnostics"
+    "shiprocket"
   ],
   "breakage_warned": false,
-  "date": "2026-08-12",
+  "date": "2026-08-13",
   "gmp_history": {
     "ardeeindustries": {
       "gmp_percent": 28.3,
       "last_seen": "2026-08-07"
     },
     "beharilalengineering": {
-      "gmp_percent": 23.51,
-      "last_seen": "2026-08-12"
+      "gmp_percent": 25.96,
+      "last_seen": "2026-08-13"
     },
     "dhoottransmission": {
       "gmp_percent": 29.28,
@@ -30,8 +28,8 @@
       "last_seen": "2026-08-11"
     },
     "milkymist": {
-      "gmp_percent": 16.42,
-      "last_seen": "2026-08-12"
+      "gmp_percent": 15.71,
+      "last_seen": "2026-08-13"
     },
     "molbiodiagnostics": {
       "gmp_percent": 17.1,
@@ -42,8 +40,8 @@
       "last_seen": "2026-08-03"
     },
     "shiprocket": {
-      "gmp_percent": 30.93,
-      "last_seen": "2026-08-12"
+      "gmp_percent": 35.05,
+      "last_seen": "2026-08-13"
     },
     "technocraftventures": {
       "gmp_percent": 14.15,
