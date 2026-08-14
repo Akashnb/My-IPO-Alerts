@@ -1,19 +1,18 @@
 {
   "alerted_ipos": [
-    "beharilalengineering",
-    "milkymist",
-    "shiprocket"
+    "shiprocket",
+    "beharilalengineering"
   ],
   "breakage_warned": false,
-  "date": "2026-08-13",
+  "date": "2026-08-14",
   "gmp_history": {
     "ardeeindustries": {
       "gmp_percent": 28.3,
       "last_seen": "2026-08-07"
     },
     "beharilalengineering": {
-      "gmp_percent": 25.96,
-      "last_seen": "2026-08-13"
+      "gmp_percent": 28.07,
+      "last_seen": "2026-08-14"
     },
     "dhoottransmission": {
       "gmp_percent": 29.28,
@@ -40,8 +39,8 @@
       "last_seen": "2026-08-03"
     },
     "shiprocket": {
-      "gmp_percent": 35.05,
-      "last_seen": "2026-08-13"
+      "gmp_percent": 37.11,
+      "last_seen": "2026-08-14"
     },
     "technocraftventures": {
       "gmp_percent": 14.15,
