@@ -1,26 +1,35 @@
 {
   "alerted_ipos": [
-    "shiprocket",
-    "beharilalengineering"
+    "beharilalengineering",
+    "lalithaajewellerymar",
+    "shiprocket"
   ],
   "breakage_warned": false,
-  "date": "2026-08-14",
+  "date": "2026-08-17",
   "gmp_history": {
     "ardeeindustries": {
       "gmp_percent": 28.3,
       "last_seen": "2026-08-07"
     },
     "beharilalengineering": {
-      "gmp_percent": 28.07,
-      "last_seen": "2026-08-14"
+      "gmp_percent": 29.82,
+      "last_seen": "2026-08-17"
     },
     "dhoottransmission": {
       "gmp_percent": 29.28,
       "last_seen": "2026-08-12"
     },
+    "horizonindustrialpar": {
+      "gmp_percent": 6.67,
+      "last_seen": "2026-08-17"
+    },
     "junipergreenenergy": {
       "gmp_percent": 0.89,
       "last_seen": "2026-08-03"
+    },
+    "lalithaajewellerymar": {
+      "gmp_percent": 14.92,
+      "last_seen": "2026-08-17"
     },
     "leapindia": {
       "gmp_percent": 8.18,
@@ -39,8 +48,8 @@
       "last_seen": "2026-08-03"
     },
     "shiprocket": {
-      "gmp_percent": 37.11,
-      "last_seen": "2026-08-14"
+      "gmp_percent": 34.02,
+      "last_seen": "2026-08-17"
     },
     "technocraftventures": {
       "gmp_percent": 14.15,
@@ -59,6 +68,10 @@
     "dhoottransmission": {
       "cached_at": "2026-08-10",
       "lot_size": 17
+    },
+    "lalithaajewellerymar": {
+      "cached_at": "2026-08-17",
+      "lot_size": 74
     },
     "leapindia": {
       "cached_at": "2026-08-10",
