@@ -1,7 +1,7 @@
 {
   "alerted_ipos": [],
-  "breakage_warned": false,
-  "date": "2026-08-19",
+  "breakage_warned": true,
+  "date": "2026-08-20",
   "gmp_history": {
     "ardeeindustries": {
       "gmp_percent": 28.3,
@@ -91,5 +91,5 @@
       "lot_size": 70
     }
   },
-  "zero_ipo_streak": 2
+  "zero_ipo_streak": 3
 }
