@@ -11,9 +11,19 @@ day it is today).
 Sources:
   1. investorgain.com  (JS-rendered table, read via headless browser)
   2. ipowatch.in       (plain server-rendered HTML, read via requests)
-The richer fields (profit in Rs) are pulled from ipowatch.in only, since its
-table structure has been directly verified. investorgain.com is kept as a
-second source purely for GMP % cross-checking.
+
+EXTRACTION: AI-based (Gemini), not regex-based
+  Earlier versions of this script parsed each source's HTML with per-row regex
+  patterns (looking for the literal word "Mainboard", specific date formats,
+  etc.). That broke silently whenever a source site tweaked its wording or
+  layout -- the scraper kept "succeeding" (no crash, no error) but quietly
+  returned zero rows, since nothing matched anymore. This version instead
+  sends each source's raw page text to Gemini (free tier) and asks it to
+  return structured JSON. This is far more resistant to layout drift, since
+  it reads the page semantically instead of depending on an exact literal
+  match or column position. If Gemini is unavailable or GEMINI_API_KEY isn't
+  set, that source is skipped for this run (same graceful-degradation
+  behavior as before if a source site itself goes down).
 
 STATE / MEMORY (state.json, committed back to the repo each run):
   - Powers day-over-day trend arrows (compares today's GMP% to the last run
@@ -22,8 +32,8 @@ STATE / MEMORY (state.json, committed back to the repo each run):
     calendar day (e.g. scheduled run + a manual test run).
   - Tracks consecutive scheduled runs that found zero open mainboard IPOs at
     all -- a sign the scraper itself may be silently broken (site redesign,
-    etc.), not just a quiet market day -- and sends a one-time warning if that
-    streak gets suspiciously long.
+    Gemini quota exhausted, etc.), not just a quiet market day -- and sends a
+    one-time warning if that streak gets suspiciously long.
 
 If one source fails or is unreachable, the script carries on with the other and
 says so in the logs. If BOTH fail, it sends a warning message instead of
@@ -31,9 +41,16 @@ silently doing nothing.
 
 Data is unofficial grey-market info -- informational only, not investment advice.
 
+Setup (in addition to existing TELEGRAM_* secrets):
+    1. Get a free Gemini API key at https://aistudio.google.com/apikey
+       (no credit card required for the free tier)
+    2. Add it as a GitHub repo secret named GEMINI_API_KEY
+    3. Add GEMINI_API_KEY to the workflow's `env:` block, same as the
+       Telegram secrets
+
 Run manually:
     python ipo_gmp_alert.py
-    python ipo_gmp_alert.py --debug     # prints raw scraped rows and merged state
+    python ipo_gmp_alert.py --debug     # prints raw scraped text and Gemini's parsed output
 """
 
 import os
@@ -50,6 +67,7 @@ from zoneinfo import ZoneInfo
 from concurrent.futures import ThreadPoolExecutor
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
+import google.generativeai as genai
 
 # ---------- CONFIG ----------
 GMP_THRESHOLD = float(os.environ.get("GMP_THRESHOLD", "10"))  # percent
@@ -57,9 +75,9 @@ MISMATCH_FLAG_THRESHOLD = 5.0  # percentage-point gap between sources worth flag
 BREAKAGE_STREAK_DAYS = int(os.environ.get("BREAKAGE_STREAK_DAYS", "3"))  # consecutive zero-IPO scheduled runs before warning
 
 # Grey market premiums this far outside normal range are almost certainly a
-# parsing error (e.g. picked up the wrong number from the page), not a real
-# GMP -- reject rather than trust. Generous bounds since GMP genuinely can be
-# negative (discount) or occasionally very high for a hot IPO.
+# parsing error (Gemini misreading a number, or a stray figure from the page),
+# not a real GMP -- reject rather than trust. Generous bounds since GMP
+# genuinely can be negative (discount) or occasionally very high for a hot IPO.
 SANE_GMP_RANGE = (-50.0, 500.0)
 
 RETRY_ATTEMPTS = 3
@@ -70,6 +88,15 @@ STATE_RETENTION_DAYS = int(os.environ.get("STATE_RETENTION_DAYS", "60"))  # prun
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+# Flash-Lite is deliberately preferred over Flash/Pro here: it has the most
+# generous free-tier daily request quota of the family, and this script only
+# ever needs simple structured extraction, not deep reasoning -- no need to
+# spend a more expensive model's quota on a task this well-defined. Override
+# via env var if Google renames/retires this model.
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-lite-latest")
+GEMINI_MAX_CHARS = 15000  # raw text sent per source; keeps prompts well within free-tier TPM limits
+
 INVESTORGAIN_URL = "https://www.investorgain.com/report/live-ipo-gmp/331/ipo/"
 IPOWATCH_URL = "https://ipowatch.in/ipo-grey-market-premium-latest-ipo-gmp/"
 
@@ -78,7 +105,6 @@ IST = ZoneInfo("Asia/Kolkata")
 # -----------------------------
 
 DATE_RANGE_RE = re.compile(r"\b(\d{1,2})-(\d{1,2})\s+([A-Za-z]+)\b")
-RUPEE_RE = re.compile(r"₹\s*([\d,]+(?:\.\d+)?)")
 LOT_SIZE_PATTERNS = [
     re.compile(r"lot size[\w\s]{0,25}?\bis (\d+)\s*shares", re.IGNORECASE),
     re.compile(r"lot size of (\d+)\s*shares", re.IGNORECASE),
@@ -97,25 +123,19 @@ def normalize_name(name):
     return re.sub(r"[^a-z0-9]", "", name.lower())[:20]
 
 
-def extract_status(text, options):
-    """Shared status-parsing logic for both scrapers -- avoids the same regex loop being copy-pasted twice."""
-    status = next((s for s in options if re.search(rf"\b{s}\b", text, re.IGNORECASE)), None)
-    return "Closed" if status == "Close" else status
-
-
 def sane_gmp_or_none(gmp_percent):
     """
     Rejects a parsed GMP% if it falls outside plausible real-world bounds.
-    This is a deliberate backstop, not a nice-to-have: investorgain.com's
-    exact table structure has never been directly verified (it's JS-rendered,
-    and none of the tools available for building this could execute JS to
-    inspect it) -- Playwright, which the live script uses, can render it, but
-    that means correctness here rests on trusting an unverified assumption.
-    A value like "4500%" or "-9000%" almost certainly means a parsing error
-    (wrong number picked up from the page), not a real GMP -- so it's
+    This is a deliberate backstop, not a nice-to-have: Gemini's extraction is
+    generally reliable but not infallible, and a value like "4500%" or
+    "-9000%" almost certainly means a misread, not a real GMP -- so it's
     discarded rather than silently fed into an average or an alert.
     """
     if gmp_percent is None:
+        return None
+    try:
+        gmp_percent = float(gmp_percent)
+    except (TypeError, ValueError):
         return None
     lo, hi = SANE_GMP_RANGE
     if lo <= gmp_percent <= hi:
@@ -141,6 +161,100 @@ def retry(fn, attempts=RETRY_ATTEMPTS, base_delay=RETRY_BASE_DELAY, label=""):
             if attempt < attempts:
                 time.sleep(base_delay * attempt)
     raise last_exc
+
+
+# ---------- GEMINI-BASED EXTRACTION ----------
+
+GEMINI_PROMPT_TEMPLATE = """You are extracting structured data from raw text scraped from {source_label}, a website listing Indian IPOs and their Grey Market Premium (GMP).
+
+Extract ONLY IPOs that are BOTH of these:
+- Currently OPEN for subscription right now (status is "Open" -- NOT Upcoming, NOT Closed, NOT Listed)
+- Mainboard IPOs (explicitly NOT SME IPOs -- exclude anything labeled SME or "SME IPO")
+
+For each qualifying IPO, extract these fields:
+- name: the IPO company name, cleaned up (string)
+- gmp_percent: the GMP percentage as a plain number, e.g. 12.5 or -3.2 (number, or null if not shown)
+- gmp_rs: the GMP value in rupees per share, as a plain number with no currency symbol or commas (number, or null if not shown)
+- price_band: the issue price / price band upper value in rupees, as a plain number (number, or null if not shown)
+- date_str: the subscription open-close date range exactly as written on the page, e.g. "12-14 Aug" (string, or null if not shown)
+
+Respond with ONLY a valid JSON array and nothing else -- no markdown code fences, no explanation, no leading/trailing text.
+Example: [{{"name": "Example Ltd", "gmp_percent": 12.5, "gmp_rs": 45, "price_band": 360, "date_str": "12-14 Aug"}}]
+If no qualifying IPOs are found, respond with exactly: []
+
+RAW TEXT FROM {source_label}:
+{raw_text}
+"""
+
+
+def extract_ipos_with_gemini(raw_text, source_label, debug=False):
+    """
+    Sends raw scraped page text to Gemini and asks for structured JSON back.
+    This replaces the old per-row regex parsing so the scraper survives
+    wording/markup changes on the source site -- Gemini reads the text
+    semantically rather than depending on an exact literal match or column
+    order. Returns a list of dicts, or [] on any failure (never raises) --
+    callers treat an empty list the same as "this source found nothing", the
+    same graceful-degradation path that already existed for a source being
+    down.
+    """
+    if not GEMINI_API_KEY:
+        print(f"[gemini] No GEMINI_API_KEY set -- skipping AI extraction for {source_label}.")
+        return []
+    if not raw_text or not raw_text.strip():
+        print(f"[gemini] No raw text to send for {source_label} -- source page may be empty or blocked.")
+        return []
+
+    prompt = GEMINI_PROMPT_TEMPLATE.format(
+        source_label=source_label,
+        raw_text=raw_text[:GEMINI_MAX_CHARS],
+    )
+
+    def attempt():
+        genai.configure(api_key=GEMINI_API_KEY)
+        model = genai.GenerativeModel(GEMINI_MODEL)
+        response = model.generate_content(
+            prompt,
+            generation_config={"temperature": 0, "response_mime_type": "application/json"},
+        )
+        text = (response.text or "").strip()
+        # Defensive strip in case the model wraps output in code fences despite
+        # the JSON response_mime_type request (some model/SDK versions do).
+        text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
+        return json.loads(text)
+
+    try:
+        data = retry(attempt, attempts=2, label=f"gemini-{source_label}")
+    except Exception as e:
+        print(f"[gemini] FAILED extracting {source_label} after attempts: {e}")
+        return []
+
+    if not isinstance(data, list):
+        print(f"[gemini] Unexpected response shape for {source_label} (not a list) -- ignoring.")
+        return []
+
+    cleaned = []
+    for item in data:
+        if not isinstance(item, dict) or not item.get("name"):
+            continue
+        gmp = sane_gmp_or_none(item.get("gmp_percent"))
+        if gmp is None:
+            continue
+        cleaned.append({
+            "name": str(item["name"]).strip(),
+            "gmp_percent": gmp,
+            "gmp_rs": item.get("gmp_rs"),
+            "price_band": item.get("price_band"),
+            "date_str": item.get("date_str"),
+        })
+
+    if debug:
+        print(f"[gemini] {source_label} parsed output:")
+        for row in cleaned:
+            print(f"  {row}")
+
+    print(f"[gemini] {source_label}: extracted {len(cleaned)} open mainboard IPO(s).")
+    return cleaned
 
 
 # ---------- STATE (persisted to state.json, committed back to the repo) ----------
@@ -242,18 +356,16 @@ def prune_state(state, retention_days=STATE_RETENTION_DAYS):
         print(f"[state] Pruned {removed} entries untouched for {retention_days}+ days.")
 
 
-# ---------- Extraction helpers ----------
-
-def extract_date_str(text):
-    m = DATE_RANGE_RE.search(text)
-    return m.group(0) if m else None
-
-
-def extract_rupee_amounts(text):
-    return [m.replace(",", "") for m in RUPEE_RE.findall(text)]
-
+# ---------- Small text-extraction helpers (still regex, but only for well-defined, low-risk fields) ----------
 
 def extract_lot_size(text):
+    """
+    Lot size extraction stays regex-based (unlike the main GMP/status
+    extraction above) because it's a single well-defined numeric fact on a
+    per-IPO detail page, worth trying cheaply before spending a Gemini call
+    on it. If none of these patterns match, resolve_lot_sizes() just leaves
+    lot_size as None and the alert degrades to a per-share profit line.
+    """
     for pattern in LOT_SIZE_PATTERNS:
         m = pattern.search(text)
         if m:
@@ -374,11 +486,10 @@ def format_trend(current_gmp, previous_gmp):
     return f"{arrow} {abs(delta):.2f}%"
 
 
-# ---------- SOURCE 1: investorgain.com (JS-rendered) ----------
+# ---------- SOURCE 1: investorgain.com (JS-rendered, then handed to Gemini) ----------
 
 def fetch_investorgain(debug=False):
     def attempt():
-        results = []
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page(user_agent=(
@@ -389,42 +500,25 @@ def fetch_investorgain(debug=False):
             page.wait_for_selector("table tbody tr", timeout=30000)
             page.wait_for_timeout(1500)
 
-            row_locators = page.locator("table tbody tr")
-            count = row_locators.count()
-
-            for i in range(count):
-                cells = row_locators.nth(i).locator("td").all_inner_texts()
-                cells = [c.strip().replace("\n", " ") for c in cells]
-                if not cells:
-                    continue
-                text = " | ".join(cells)
-                if debug:
-                    print(f"[investorgain] ROW {i}: {cells}")
-
-                name = cells[0].split("IPO")[0].strip() or cells[0].strip()
-                status = extract_status(text, ["Open", "Upcoming", "Close", "Listed"])
-                gmp_match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
-                gmp_percent = sane_gmp_or_none(float(gmp_match.group(1))) if gmp_match else None
-                date_str = extract_date_str(text)
-
-                results.append({
-                    "name": name, "status": status,
-                    "gmp_percent": gmp_percent, "date_str": date_str,
-                })
-
+            # Grab the whole rendered table's visible text in one shot and let
+            # Gemini do the row-by-row interpretation, instead of walking rows
+            # with Playwright locators and regexing each one ourselves.
+            raw_text = page.locator("table").first.inner_text()
             browser.close()
-        return results
+        return raw_text
 
     try:
-        results = retry(attempt, label="investorgain")
-        print(f"[investorgain] scraped {len(results)} rows.")
-        return results
+        raw_text = retry(attempt, label="investorgain")
+        if debug:
+            print(f"[investorgain] RAW TEXT (first 2000 chars):\n{raw_text[:2000]}\n")
+        print(f"[investorgain] fetched page text ({len(raw_text)} chars).")
+        return extract_ipos_with_gemini(raw_text, "investorgain.com", debug=debug)
     except Exception as e:
         print(f"[investorgain] FAILED after {RETRY_ATTEMPTS} attempts: {e}")
         return []
 
 
-# ---------- SOURCE 2: ipowatch.in (static HTML) ----------
+# ---------- SOURCE 2: ipowatch.in (static HTML, then handed to Gemini) ----------
 
 def fetch_ipowatch(session, debug=False):
     def attempt():
@@ -444,48 +538,30 @@ def fetch_ipowatch(session, debug=False):
         if table is None:
             raise ValueError("could not locate the GMP table on the page")
 
-        results = []
-        rows = table.find_all("tr")[1:]
-        for r in rows:
-            cells = [c.get_text(" ", strip=True) for c in r.find_all(["td", "th"])]
-            if not cells:
-                continue
-            text = " | ".join(cells)
-            if debug:
-                print(f"[ipowatch] ROW: {cells}")
+        raw_text = table.get_text("\n", strip=True)
 
-            name = cells[0].strip()
-            is_mainboard = bool(re.search(r"\bMainboard\b", text, re.IGNORECASE)) and not re.search(r"SME", text, re.IGNORECASE)
-            status = extract_status(text, ["Open", "Upcoming", "Close", "Closed", "Listed"])
-            gmp_match = re.search(r"\(([-+]?\d+(?:\.\d+)?)\s*%\)", text)
-            gmp_percent = sane_gmp_or_none(float(gmp_match.group(1))) if gmp_match else None
-            date_str = extract_date_str(text)
-
-            amounts = extract_rupee_amounts(text)
-            gmp_rs = amounts[0] if len(amounts) >= 1 else None
-            price_band = amounts[1] if len(amounts) >= 2 else None
-            est_listing = amounts[2] if len(amounts) >= 3 else None
-
+        # Detail-page links are still collected the old way (by name), since
+        # Gemini isn't asked to invent URLs -- these power the lot-size lookup
+        # later and are matched back onto Gemini's parsed rows by normalized name.
+        links_by_name = {}
+        for r in table.find_all("tr")[1:]:
             link_tag = r.find("a", href=True)
-            detail_url = urljoin(IPOWATCH_URL, link_tag["href"]) if link_tag else None
+            name_cell = r.find(["td", "th"])
+            if link_tag and name_cell:
+                key = normalize_name(name_cell.get_text(" ", strip=True))
+                links_by_name[key] = urljoin(IPOWATCH_URL, link_tag["href"])
 
-            results.append({
-                "name": name,
-                "status": status,
-                "gmp_percent": gmp_percent,
-                "is_mainboard": is_mainboard,
-                "date_str": date_str,
-                "gmp_rs": gmp_rs,
-                "price_band": price_band,
-                "est_listing": est_listing,
-                "detail_url": detail_url,
-            })
-        return results
+        return raw_text, links_by_name
 
     try:
-        results = retry(attempt, label="ipowatch")
-        print(f"[ipowatch] scraped {len(results)} rows.")
-        return results
+        raw_text, links_by_name = retry(attempt, label="ipowatch")
+        if debug:
+            print(f"[ipowatch] RAW TEXT (first 2000 chars):\n{raw_text[:2000]}\n")
+        print(f"[ipowatch] fetched page text ({len(raw_text)} chars).")
+        rows = extract_ipos_with_gemini(raw_text, "ipowatch.in", debug=debug)
+        for row in rows:
+            row["detail_url"] = links_by_name.get(normalize_name(row["name"]))
+        return rows
     except Exception as e:
         print(f"[ipowatch] FAILED after {RETRY_ATTEMPTS} attempts: {e}")
         return []
@@ -494,22 +570,23 @@ def fetch_ipowatch(session, debug=False):
 # ---------- CROSS-CHECK & MERGE ----------
 
 def merge_sources(ig_rows, iw_rows, gmp_history):
+    """
+    ig_rows / iw_rows are already-filtered (open, mainboard, sane GMP) lists
+    from Gemini -- no status/mainboard re-filtering needed here, just merging
+    matching IPOs across the two sources and averaging their GMP%.
+    """
     merged = {}
 
     for row in ig_rows:
-        if row["status"] != "Open" or row["gmp_percent"] is None:
-            continue
         key = normalize_name(row["name"])
         merged[key] = {
             "name": row["name"],
             "sources": {"investorgain": row["gmp_percent"]},
             "date_str": row.get("date_str"),
-            "gmp_rs": None, "price_band": None, "est_listing": None,
+            "gmp_rs": None, "price_band": None, "detail_url": None,
         }
 
     for row in iw_rows:
-        if row["status"] != "Open" or row["gmp_percent"] is None or not row.get("is_mainboard"):
-            continue
         key = normalize_name(row["name"])
         if key in merged:
             merged[key]["sources"]["ipowatch"] = row["gmp_percent"]
@@ -518,7 +595,6 @@ def merge_sources(ig_rows, iw_rows, gmp_history):
         merged[key]["date_str"] = row.get("date_str") or merged[key].get("date_str")
         merged[key]["gmp_rs"] = row.get("gmp_rs")
         merged[key]["price_band"] = row.get("price_band")
-        merged[key]["est_listing"] = row.get("est_listing")
         merged[key]["detail_url"] = row.get("detail_url")
 
     final = []
@@ -534,7 +610,6 @@ def merge_sources(ig_rows, iw_rows, gmp_history):
             "mismatch": mismatch,
             "gmp_rs": item.get("gmp_rs"),
             "price_band": item.get("price_band"),
-            "est_listing": item.get("est_listing"),
             "detail_url": item.get("detail_url"),
             "trend": format_trend(avg, get_previous_gmp(gmp_history, key)),
             "day_label": window.get("day_label"),
@@ -621,17 +696,17 @@ def main():
     if not ig_rows and not iw_rows:
         send_telegram(
             "⚠️ <b>IPO GMP Alert Agent</b>: both data sources failed today. "
-            "No IPO check was possible. You may want to check the source sites manually, "
-            "or the scrapers may need a small fix."
+            "No IPO check was possible. This can mean the source sites are down, "
+            "or GEMINI_API_KEY is missing/invalid/rate-limited -- check the Action logs."
         )
         prune_state(state)
         save_state(state)
         return
 
     if not ig_rows:
-        print("Continuing with ipowatch.in only (investorgain unavailable).")
+        print("Continuing with ipowatch.in only (investorgain unavailable or returned nothing).")
     if not iw_rows:
-        print("Continuing with investorgain.com only (ipowatch unavailable) -- profit/window data will be missing this run.")
+        print("Continuing with investorgain.com only (ipowatch unavailable or returned nothing) -- profit/window data will be missing this run.")
 
     merged = merge_sources(ig_rows, iw_rows, state["gmp_history"])
 
@@ -652,8 +727,8 @@ def main():
             send_telegram(
                 f"⚠️ <b>IPO GMP Alert Agent</b>: 0 open mainboard IPOs found for "
                 f"{state['zero_ipo_streak']} scheduled runs in a row. This can happen in a "
-                f"genuinely quiet market, but it can also mean a source site changed its layout "
-                f"and the scraper needs a fix. Worth a quick manual check."
+                f"genuinely quiet market, but it can also mean a source site changed its layout, "
+                f"or GEMINI_API_KEY is missing/rate-limited. Worth a quick manual check with --debug."
             )
             state["breakage_warned"] = True
 
