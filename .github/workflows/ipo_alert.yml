@@ -50,6 +50,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GMP_THRESHOLD: "10"
           FORCE_RESEND: ${{ github.event.inputs.force_resend }}
         run: python ipo_gmp_alert.py

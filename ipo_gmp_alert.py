@@ -19,11 +19,18 @@ EXTRACTION: AI-based (Gemini), not regex-based
   layout -- the scraper kept "succeeding" (no crash, no error) but quietly
   returned zero rows, since nothing matched anymore. This version instead
   sends each source's raw page text to Gemini (free tier) and asks it to
-  return structured JSON. This is far more resistant to layout drift, since
-  it reads the page semantically instead of depending on an exact literal
-  match or column position. If Gemini is unavailable or GEMINI_API_KEY isn't
-  set, that source is skipped for this run (same graceful-degradation
-  behavior as before if a source site itself goes down).
+  return structured JSON, using a strict response_schema so the model can
+  only return well-formed data in the exact shape expected -- no more
+  stripping code fences or hoping the model didn't add stray text. This is
+  far more resistant to layout drift, since it reads the page semantically
+  instead of depending on an exact literal match or column position. If
+  Gemini is unavailable or GEMINI_API_KEY isn't set, that source is skipped
+  for this run (same graceful-degradation behavior as before if a source
+  site itself goes down).
+
+  Uses the `google-genai` SDK (the current, actively maintained package).
+  The older `google-generativeai` package it replaced is fully deprecated --
+  no more updates or bug fixes -- so this isn't optional going forward.
 
 STATE / MEMORY (state.json, committed back to the repo each run):
   - Powers day-over-day trend arrows (compares today's GMP% to the last run
@@ -67,7 +74,8 @@ from zoneinfo import ZoneInfo
 from concurrent.futures import ThreadPoolExecutor
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
-import google.generativeai as genai
+from google import genai
+from google.genai import types as genai_types
 
 # ---------- CONFIG ----------
 GMP_THRESHOLD = float(os.environ.get("GMP_THRESHOLD", "10"))  # percent
@@ -89,13 +97,35 @@ TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-# Flash-Lite is deliberately preferred over Flash/Pro here: it has the most
-# generous free-tier daily request quota of the family, and this script only
-# ever needs simple structured extraction, not deep reasoning -- no need to
-# spend a more expensive model's quota on a task this well-defined. Override
-# via env var if Google renames/retires this model.
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-lite-latest")
+# Pinned to a specific GA (generally available, stable) model rather than a
+# "-latest" alias -- Google's own docs note that "-latest" aliases point to
+# experimental models not intended for production use, with tighter rate
+# limits and no stability guarantee. gemini-3.5-flash-lite is GA as of its
+# July 2026 release: low-latency, high free-tier daily quota, well suited to
+# a well-defined structured-extraction task like this one that doesn't need
+# a larger reasoning model. Override via env var if Google retires this
+# specific model down the line.
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
 GEMINI_MAX_CHARS = 15000  # raw text sent per source; keeps prompts well within free-tier TPM limits
+
+# Enforced on every extraction call via response_schema. This is what lets us
+# trust the response is always a well-formed list of these exact fields --
+# no free-text explanation, no markdown fences, no missing/renamed keys --
+# rather than hoping the model followed the prompt's formatting instructions.
+IPO_LIST_SCHEMA = {
+    "type": "ARRAY",
+    "items": {
+        "type": "OBJECT",
+        "properties": {
+            "name": {"type": "STRING"},
+            "gmp_percent": {"type": "NUMBER", "nullable": True},
+            "gmp_rs": {"type": "NUMBER", "nullable": True},
+            "price_band": {"type": "NUMBER", "nullable": True},
+            "date_str": {"type": "STRING", "nullable": True},
+        },
+        "required": ["name"],
+    },
+}
 
 INVESTORGAIN_URL = "https://www.investorgain.com/report/live-ipo-gmp/331/ipo/"
 IPOWATCH_URL = "https://ipowatch.in/ipo-grey-market-premium-latest-ipo-gmp/"
@@ -211,17 +241,25 @@ def extract_ipos_with_gemini(raw_text, source_label, debug=False):
     )
 
     def attempt():
-        genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel(GEMINI_MODEL)
-        response = model.generate_content(
-            prompt,
-            generation_config={"temperature": 0, "response_mime_type": "application/json"},
+        client = genai.Client(api_key=GEMINI_API_KEY)
+        response = client.models.generate_content(
+            model=GEMINI_MODEL,
+            contents=prompt,
+            config=genai_types.GenerateContentConfig(
+                # NOTE: temperature/top_p/top_k are deliberately NOT set here.
+                # Google deprecated these sampling parameters on the current
+                # Gemini 3.x Flash line (silently ignored today, documented
+                # to error on future model generations) -- consistency for
+                # this task comes entirely from response_schema below, which
+                # constrains the output shape regardless of sampling.
+                response_mime_type="application/json",
+                response_schema=IPO_LIST_SCHEMA,
+            ),
         )
-        text = (response.text or "").strip()
-        # Defensive strip in case the model wraps output in code fences despite
-        # the JSON response_mime_type request (some model/SDK versions do).
-        text = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
-        return json.loads(text)
+        # response_schema guarantees well-formed JSON matching our exact
+        # shape -- no code-fence stripping or free-text handling needed here
+        # the way the old SDK's unstructured output required.
+        return json.loads(response.text)
 
     try:
         data = retry(attempt, attempts=2, label=f"gemini-{source_label}")
@@ -497,13 +535,34 @@ def fetch_investorgain(debug=False):
                 "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
             ))
             page.goto(INVESTORGAIN_URL, timeout=60000)
-            page.wait_for_selector("table tbody tr", timeout=30000)
-            page.wait_for_timeout(1500)
 
-            # Grab the whole rendered table's visible text in one shot and let
-            # Gemini do the row-by-row interpretation, instead of walking rows
-            # with Playwright locators and regexing each one ourselves.
-            raw_text = page.locator("table").first.inner_text()
+            # page.wait_for_selector() and page.wait_for_timeout() are both
+            # flagged discouraged/deprecated in current Playwright -- the
+            # former in favor of Locator-based waiting, the latter because a
+            # fixed guess-delay is either too short (page still loading GMP
+            # values asynchronously) or wastefully long, depending on network
+            # conditions on any given run. Locator.wait_for() replaces the
+            # first; a short content-stability poll below replaces the
+            # second with something that actually reflects page state
+            # instead of guessing a duration.
+            table = page.locator("table").first
+            table.locator("tbody tr").first.wait_for(state="visible", timeout=30000)
+
+            previous_text = None
+            stable_reads = 0
+            deadline = time.time() + 15
+            while time.time() < deadline:
+                current_text = table.inner_text()
+                if current_text == previous_text:
+                    stable_reads += 1
+                    if stable_reads >= 2:
+                        break
+                else:
+                    stable_reads = 0
+                previous_text = current_text
+                time.sleep(0.5)
+
+            raw_text = table.inner_text()
             browser.close()
         return raw_text
 
