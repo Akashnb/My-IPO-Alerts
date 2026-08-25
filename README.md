@@ -1,6 +1,6 @@
 # 📈 IPO GMP Alert Agent
 
-**Automatic daily Telegram alerts for high-GMP Mainboard IPOs — 100% free, runs on GitHub's servers**
+**Automatic daily Telegram alerts for high-GMP Mainboard IPOs — 100% free, runs on GitHub's servers, extraction powered by AI**
 
 ---
 
@@ -27,12 +27,20 @@ This agent runs automatically every morning, checks currently **open Mainboard I
 laptop or phone, and it can alert one chat or many (e.g. you + a friend's group).
 
 > **🔀 Why two sources?**
-> If either site goes down, changes its layout, or a scraper breaks, the other keeps
-> the agent running. When both sources have data for the same IPO, their GMP% is
-> averaged and flagged in the alert if they disagree by 5 points or more, so you're
+> If either site goes down, changes its layout, or one becomes unparseable, the other
+> keeps the agent running. When both sources have data for the same IPO, their GMP%
+> is averaged and flagged in the alert if they disagree by 5 points or more, so you're
 > never silently trusting one bad number. If *both* sources ever fail on the same day,
 > you'll get a warning message instead of silence — so a break is visible immediately,
 > not something you discover a week later when you notice no alerts came through.
+
+> **🤖 Why AI-based extraction (Gemini)?**
+> Instead of matching exact HTML structure or literal words on the page (which breaks
+> silently the moment a site tweaks its wording or layout), this agent hands each
+> source's raw page text to Google's free Gemini API and asks for structured data
+> back. It reads the page the way a person would, which makes it far more resistant
+> to small site redesigns — one of the most common ways this kind of automation
+> quietly stops working.
 
 ---
 
@@ -43,10 +51,11 @@ laptop or phone, and it can alert one chat or many (e.g. you + a friend's group)
 | 1️⃣ | Create your Telegram bot |
 | 2️⃣ | Create the channel and add your bot |
 | 3️⃣ | Create a GitHub repo |
-| 4️⃣ | Add your Telegram credentials as secrets |
-| 5️⃣ | Test it manually |
-| 6️⃣ | Let it run automatically |
-| 7️⃣ | *(Recommended)* Add a free backup trigger |
+| 4️⃣ | Get a free Gemini API key |
+| 5️⃣ | Add your credentials as secrets |
+| 6️⃣ | Test it manually |
+| 7️⃣ | Let it run automatically |
+| 8️⃣ | *(Recommended)* Add a free backup trigger |
 
 ---
 
@@ -107,19 +116,43 @@ laptop or phone, and it can alert one chat or many (e.g. you + a friend's group)
 
 ---
 
-## 4️⃣ Add your Telegram credentials as secrets
+## 4️⃣ Get a free Gemini API key
 
-> 🔒 Never put your bot token directly in the code. Instead:
+This agent uses Google's Gemini API (free tier, no credit card required) to read
+and interpret the IPO data pages. You'll need your own key — it's a couple of
+minutes.
 
-1. In your repo, go to **Settings → Secrets and variables → Actions**.
-2. Click **New repository secret**:
-   - Name: `TELEGRAM_BOT_TOKEN` → Value: (the token from Step 1️⃣)
-3. Click **New repository secret** again:
-   - Name: `TELEGRAM_CHAT_ID` → Value: (the channel chat ID from Step 2️⃣, starting with `-100`)
+1. Go to **[aistudio.google.com/apikey](https://aistudio.google.com/apikey)**
+2. Sign in with any Google account
+3. Click **Create API key** → choose or create a Google Cloud project when prompted
+4. Copy the key that's generated (starts with `AIza...`)
+
+   > 🔑 **Save this** — it's your `GEMINI_API_KEY`.
+
+   > 💰 **Free tier:** generous enough for this use case — the agent only makes a
+   > couple of API calls per day (one per source), nowhere near the free daily
+   > limit. Exact quota numbers shift over time on Google's end; if you ever see
+   > Gemini-related errors in the logs after months of smooth running, it's worth
+   > a quick check at [ai.google.dev/pricing](https://ai.google.dev/pricing).
 
 ---
 
-## 5️⃣ Test it manually
+## 5️⃣ Add your credentials as secrets
+
+> 🔒 Never put tokens or API keys directly in the code. Instead:
+
+1. In your repo, go to **Settings → Secrets and variables → Actions**.
+2. Click **New repository secret** three times, adding:
+
+   | Name | Value |
+   |---|---|
+   | `TELEGRAM_BOT_TOKEN` | the token from Step 1️⃣ |
+   | `TELEGRAM_CHAT_ID` | the channel chat ID from Step 2️⃣ (starts with `-100`) |
+   | `GEMINI_API_KEY` | the key from Step 4️⃣ (starts with `AIza`) |
+
+---
+
+## 6️⃣ Test it manually
 
 1. In your repo, click the **Actions** tab.
 2. Click **Daily IPO GMP Alert** on the left.
@@ -132,7 +165,7 @@ laptop or phone, and it can alert one chat or many (e.g. you + a friend's group)
 
 ---
 
-## 6️⃣ Let it run automatically
+## 7️⃣ Let it run automatically
 
 That's it — nothing else to do for a basic setup. The workflow is scheduled in
 `.github/workflows/ipo_alert.yml` via a `cron:` line, in **UTC**, format
@@ -142,7 +175,7 @@ That's it — nothing else to do for a basic setup. The workflow is scheduled in
 > periods, and — more importantly — can occasionally **skip a run entirely with no
 > error and no notification**, especially at popular times like exact hours or
 > half-hours. That's a known limitation of GitHub's free scheduler, not a bug in this
-> repo. **Step 7️⃣** below shows how to add a free, independent backup so a missed
+> repo. **Step 8️⃣** below shows how to add a free, independent backup so a missed
 > GitHub-side trigger doesn't mean a missed alert.
 
 - 🕒 **To change the time:** edit the `cron` line. Example: for 7:30 AM IST use
@@ -152,7 +185,7 @@ That's it — nothing else to do for a basic setup. The workflow is scheduled in
 
 ---
 
-## 7️⃣ Add a free backup trigger `(recommended)`
+## 8️⃣ Add a free backup trigger `(recommended)`
 
 GitHub's scheduler is best-effort — it can silently drop a run under load. This
 repo's workflow already listens for a second trigger type, `repository_dispatch`,
@@ -164,7 +197,7 @@ workflow instead. The workflow's built-in same-day dedup logic makes sure you
 This uses **[cron-job.org](https://cron-job.org)**, a free external cron service —
 no code changes needed. ✏️
 
-### 7.1 — Create a GitHub Personal Access Token
+### 8.1 — Create a GitHub Personal Access Token
 
 1. GitHub → your profile picture (top right) → **Settings**
 2. Left sidebar, scroll to the bottom → **Developer settings**
@@ -178,11 +211,11 @@ no code changes needed. ✏️
 
    > 🔑 **Copy the token immediately** (starts with `ghp_`) — GitHub only shows it once.
 
-### 7.2 — Create a free cron-job.org account
+### 8.2 — Create a free cron-job.org account
 
 1. Go to [cron-job.org](https://cron-job.org) → **Sign up** → verify your email → log in.
 
-### 7.3 — Create the cron job
+### 8.3 — Create the cron job
 
 1. Click **Cronjobs → Create cronjob**
 2. **Title:** `IPO GMP Alert Trigger`
@@ -217,11 +250,11 @@ no code changes needed. ✏️
      | `Accept` | `application/vnd.github+json` |
      | `Content-Type` | `application/json` |
 
-     *(Use your real token from Step 7.1 in place of `ghp_YOUR_TOKEN_HERE`.)*
+     *(Use your real token from Step 8.1 in place of `ghp_YOUR_TOKEN_HERE`.)*
 
 6. Save the job. 💾
 
-### 7.4 — Test it now
+### 8.4 — Test it now
 
 1. On the job's page, click **▶ Run now**.
 2. Check the job's execution history — you want a **204** status ✅ (success).
@@ -259,23 +292,26 @@ alerts to the channel; friends join via a single invite link; that's it.
 - 💬 **GMP data is unofficial.** It comes from the grey market, not an exchange. Treat it as
   a sentiment signal, not investment advice — the agent just automates what you were
   already checking manually.
-- 🧩 **Site structure can change.** The script reads both sites by matching text
-  patterns (IPO name, status, GMP %) rather than fixed column positions, which
-  makes it fairly resistant to small layout tweaks. If a site redesigns significantly
-  and the agent stops finding data on one of them, the other keeps it running while
-  you fix it. To see what changed, run this locally:
+- 🧩 **Site structure can change.** The agent reads both sites using AI (Gemini) rather
+  than exact HTML structure or fixed wording, which makes it fairly resistant to
+  layout tweaks. If a site redesigns significantly enough that even AI extraction
+  struggles, the other source keeps it running while you investigate. To see what's
+  actually being scraped and parsed, run this locally:
   ```bash
   pip install -r requirements.txt
   playwright install chromium
   python ipo_gmp_alert.py --debug
   ```
-  This prints every raw row scraped from both sources so you (or Claude) can quickly
-  adjust the parsing logic.
+  This prints the raw text pulled from both sources and exactly what Gemini
+  extracted from each, so you (or Claude) can quickly spot what changed.
+- 🤖 **If alerts stop and `--debug` looks fine:** double-check `GEMINI_API_KEY` is
+  still valid and hasn't hit a quota limit — this is a different failure mode from a
+  site layout change, and the Action logs will usually say which one it is.
 - 🏢 **Only Mainboard IPOs** are checked (SME excluded), per your request.
 - 💰 **Free tier limits:** public GitHub repos get unlimited Actions minutes for this kind of
   scheduled job; this script takes well under a minute to run, so you're nowhere close to any limit even on a private repo.
 - ⏰ **GitHub's scheduler is best-effort.** It can be delayed or occasionally skip a
-  scheduled run entirely under load, with no error shown anywhere. Step 7️⃣'s backup
+  scheduled run entirely under load, with no error shown anywhere. Step 8️⃣'s backup
   trigger is the fix for this — free, and requires no code changes.
 
 ---
@@ -283,9 +319,8 @@ alerts to the channel; friends join via a single invite link; that's it.
 ## 🚀 Optional upgrades `(not required)`
 
 - 🔕➡️🔔 **Also alert on "no IPOs today"** — uncomment the last line in `main()` in `ipo_gmp_alert.py`.
-- 🤖 **Real "AI" summarization** — pipe the day's IPO list through the Claude API to get a
-  one-line plain-English take on each IPO (needs a paid Anthropic API key, so left out to
-  keep this 100% free — happy to add it if you want it later).
+- 🤖 **Even richer AI summaries** — pipe the day's IPO list through a second AI call to
+  get a one-line plain-English take on each IPO's outlook, beyond just the raw numbers.
 
 ---
 
