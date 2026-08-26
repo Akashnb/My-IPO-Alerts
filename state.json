@@ -1,8 +1,16 @@
 {
-  "alerted_ipos": [],
-  "breakage_warned": true,
+  "alerted_ipos": [
+    "hytechengineers",
+    "skywaysairservices",
+    "symbiotecpharmalab"
+  ],
+  "breakage_warned": false,
   "date": "2026-08-26",
   "gmp_history": {
+    "annuprojects": {
+      "gmp_percent": 0.0,
+      "last_seen": "2026-08-26"
+    },
     "ardeeindustries": {
       "gmp_percent": 28.3,
       "last_seen": "2026-08-07"
@@ -18,6 +26,10 @@
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
       "last_seen": "2026-08-17"
+    },
+    "hytechengineers": {
+      "gmp_percent": 56.6,
+      "last_seen": "2026-08-26"
     },
     "junipergreenenergy": {
       "gmp_percent": 0.89,
@@ -47,6 +59,14 @@
       "gmp_percent": 34.02,
       "last_seen": "2026-08-17"
     },
+    "skywaysairservices": {
+      "gmp_percent": 21.01,
+      "last_seen": "2026-08-26"
+    },
+    "symbiotecpharmalab": {
+      "gmp_percent": 35.63,
+      "last_seen": "2026-08-26"
+    },
     "technocraftventures": {
       "gmp_percent": 14.15,
       "last_seen": "2026-08-11"
@@ -64,6 +84,10 @@
     "dhoottransmission": {
       "cached_at": "2026-08-10",
       "lot_size": 17
+    },
+    "hytechengineers": {
+      "cached_at": "2026-08-26",
+      "lot_size": 283
     },
     "lalithaajewellerymar": {
       "cached_at": "2026-08-17",
@@ -86,10 +110,18 @@
       "cached_at": "2026-08-12",
       "lot_size": 154
     },
+    "skywaysairservices": {
+      "cached_at": "2026-08-26",
+      "lot_size": 100
+    },
+    "symbiotecpharmalab": {
+      "cached_at": "2026-08-26",
+      "lot_size": 15
+    },
     "technocraftventures": {
       "cached_at": "2026-08-10",
       "lot_size": 70
     }
   },
-  "zero_ipo_streak": 6
+  "zero_ipo_streak": 0
 }
