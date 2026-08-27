@@ -1,11 +1,10 @@
 {
   "alerted_ipos": [
-    "hytechengineers",
-    "skywaysairservices",
-    "symbiotecpharmalab"
+    "esdssoftwaresolution",
+    "priorityjewels"
   ],
   "breakage_warned": false,
-  "date": "2026-08-26",
+  "date": "2026-08-27",
   "gmp_history": {
     "annuprojects": {
       "gmp_percent": 0.0,
@@ -22,6 +21,10 @@
     "dhoottransmission": {
       "gmp_percent": 29.28,
       "last_seen": "2026-08-12"
+    },
+    "esdssoftwaresolution": {
+      "gmp_percent": 85.08,
+      "last_seen": "2026-08-27"
     },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
@@ -54,6 +57,18 @@
     "mvelectrosystems": {
       "gmp_percent": 27.06,
       "last_seen": "2026-08-03"
+    },
+    "perniaspopupstudio": {
+      "gmp_percent": 0.0,
+      "last_seen": "2026-08-27"
+    },
+    "priorityjewels": {
+      "gmp_percent": 10.0,
+      "last_seen": "2026-08-27"
+    },
+    "raysofbelief": {
+      "gmp_percent": 7.53,
+      "last_seen": "2026-08-27"
     },
     "shiprocket": {
       "gmp_percent": 34.02,
