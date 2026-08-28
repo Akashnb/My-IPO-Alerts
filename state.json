@@ -1,15 +1,16 @@
 {
   "alerted_ipos": [
-    "luminoindustries",
+    "esdssoftwaresolution",
+    "esdssoftware",
     "priorityjewels",
-    "esdssoftwaresolution"
+    "luminoindustries"
   ],
   "breakage_warned": false,
-  "date": "2026-08-27",
+  "date": "2026-08-28",
   "gmp_history": {
     "annuprojects": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-08-26"
+      "gmp_percent": 7.07,
+      "last_seen": "2026-08-28"
     },
     "ardeeindustries": {
       "gmp_percent": 28.3,
@@ -23,9 +24,13 @@
       "gmp_percent": 29.28,
       "last_seen": "2026-08-12"
     },
+    "esdssoftware": {
+      "gmp_percent": 75.76,
+      "last_seen": "2026-08-28"
+    },
     "esdssoftwaresolution": {
-      "gmp_percent": 85.08,
-      "last_seen": "2026-08-27"
+      "gmp_percent": 75.76,
+      "last_seen": "2026-08-28"
     },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
@@ -49,7 +54,7 @@
     },
     "luminoindustries": {
       "gmp_percent": 68.29,
-      "last_seen": "2026-08-27"
+      "last_seen": "2026-08-28"
     },
     "milkymist": {
       "gmp_percent": 15.71,
@@ -68,8 +73,8 @@
       "last_seen": "2026-08-27"
     },
     "priorityjewels": {
-      "gmp_percent": 10.0,
-      "last_seen": "2026-08-27"
+      "gmp_percent": 18.5,
+      "last_seen": "2026-08-28"
     },
     "raysofbelief": {
       "gmp_percent": 7.53,
@@ -105,6 +110,10 @@
       "cached_at": "2026-08-10",
       "lot_size": 17
     },
+    "esdssoftware": {
+      "cached_at": "2026-08-28",
+      "lot_size": 34
+    },
     "hytechengineers": {
       "cached_at": "2026-08-26",
       "lot_size": 283
@@ -117,6 +126,10 @@
       "cached_at": "2026-08-10",
       "lot_size": 94
     },
+    "luminoindustries": {
+      "cached_at": "2026-08-28",
+      "lot_size": 182
+    },
     "milkymist": {
       "cached_at": "2026-08-12",
       "lot_size": 107
@@ -126,6 +139,10 @@
       "lot_size": 18
     },
     "mvelectrosystems": 34,
+    "priorityjewels": {
+      "cached_at": "2026-08-28",
+      "lot_size": 75
+    },
     "shiprocket": {
       "cached_at": "2026-08-12",
       "lot_size": 154
