@@ -1,9 +1,11 @@
 {
   "alerted_ipos": [
-    "esdssoftwaresolution",
-    "esdssoftware",
     "priorityjewels",
-    "luminoindustries"
+    "deepajewellers",
+    "luminoindustries",
+    "raysofbelief",
+    "esdssoftwaresolution",
+    "esdssoftware"
   ],
   "breakage_warned": false,
   "date": "2026-08-28",
@@ -20,6 +22,10 @@
       "gmp_percent": 29.82,
       "last_seen": "2026-08-17"
     },
+    "deepajewellers": {
+      "gmp_percent": 26.55,
+      "last_seen": "2026-08-28"
+    },
     "dhoottransmission": {
       "gmp_percent": 29.28,
       "last_seen": "2026-08-12"
@@ -29,7 +35,7 @@
       "last_seen": "2026-08-28"
     },
     "esdssoftwaresolution": {
-      "gmp_percent": 75.76,
+      "gmp_percent": 86.25,
       "last_seen": "2026-08-28"
     },
     "horizonindustrialpar": {
@@ -53,7 +59,7 @@
       "last_seen": "2026-08-11"
     },
     "luminoindustries": {
-      "gmp_percent": 68.29,
+      "gmp_percent": 70.12,
       "last_seen": "2026-08-28"
     },
     "milkymist": {
@@ -73,12 +79,16 @@
       "last_seen": "2026-08-27"
     },
     "priorityjewels": {
-      "gmp_percent": 18.5,
+      "gmp_percent": 20.5,
+      "last_seen": "2026-08-28"
+    },
+    "purplestylelabs": {
+      "gmp_percent": 0.0,
       "last_seen": "2026-08-28"
     },
     "raysofbelief": {
-      "gmp_percent": 7.53,
-      "last_seen": "2026-08-27"
+      "gmp_percent": 12.13,
+      "last_seen": "2026-08-28"
     },
     "shiprocket": {
       "gmp_percent": 34.02,
