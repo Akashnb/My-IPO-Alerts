@@ -1,11 +1,12 @@
 {
   "alerted_ipos": [
-    "priorityjewels",
-    "deepajewellers",
+    "veegalanddevelopers",
     "raysofbelief",
+    "deepajewellers",
+    "priorityjewels",
     "luminoindustries",
-    "esdssoftwaresolution",
-    "esdssoftware"
+    "esdssoftware",
+    "esdssoftwaresolution"
   ],
   "breakage_warned": false,
   "date": "2026-09-01",
@@ -23,7 +24,7 @@
       "last_seen": "2026-08-17"
     },
     "deepajewellers": {
-      "gmp_percent": 31.07,
+      "gmp_percent": 24.86,
       "last_seen": "2026-09-01"
     },
     "dhoottransmission": {
@@ -83,7 +84,7 @@
       "last_seen": "2026-09-01"
     },
     "purplestylelabs": {
-      "gmp_percent": 1.48,
+      "gmp_percent": 0.7,
       "last_seen": "2026-09-01"
     },
     "raysofbelief": {
@@ -105,6 +106,10 @@
     "technocraftventures": {
       "gmp_percent": 14.15,
       "last_seen": "2026-08-11"
+    },
+    "veegalanddevelopers": {
+      "gmp_percent": 10.0,
+      "last_seen": "2026-09-01"
     }
   },
   "lot_size_cache": {
