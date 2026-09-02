@@ -1,8 +1,10 @@
 {
   "alerted_ipos": [
-    "dhoottransmission",
     "technocraftventures",
-    "molbiodiagnostics"
+    "molbiodiagnostics",
+    "raysofbelief",
+    "deepajewellers",
+    "dhoottransmission"
   ],
   "breakage_warned": false,
   "date": "2026-09-02",
@@ -20,8 +22,8 @@
       "last_seen": "2026-08-17"
     },
     "deepajewellers": {
-      "gmp_percent": 24.86,
-      "last_seen": "2026-09-01"
+      "gmp_percent": 14.69,
+      "last_seen": "2026-09-02"
     },
     "dhoottransmission": {
       "gmp_percent": 28.7,
@@ -84,8 +86,8 @@
       "last_seen": "2026-09-01"
     },
     "raysofbelief": {
-      "gmp_percent": 20.08,
-      "last_seen": "2026-09-01"
+      "gmp_percent": 12.55,
+      "last_seen": "2026-09-02"
     },
     "shiprocket": {
       "gmp_percent": 34.02,
