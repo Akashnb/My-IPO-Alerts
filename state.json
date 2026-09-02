@@ -1,15 +1,11 @@
 {
   "alerted_ipos": [
-    "veegalanddevelopers",
-    "raysofbelief",
-    "deepajewellers",
-    "priorityjewels",
-    "luminoindustries",
-    "esdssoftware",
-    "esdssoftwaresolution"
+    "dhoottransmission",
+    "technocraftventures",
+    "molbiodiagnostics"
   ],
   "breakage_warned": false,
-  "date": "2026-09-01",
+  "date": "2026-09-02",
   "gmp_history": {
     "annuprojects": {
       "gmp_percent": 7.07,
@@ -28,8 +24,8 @@
       "last_seen": "2026-09-01"
     },
     "dhoottransmission": {
-      "gmp_percent": 29.28,
-      "last_seen": "2026-08-12"
+      "gmp_percent": 28.7,
+      "last_seen": "2026-09-02"
     },
     "esdssoftware": {
       "gmp_percent": 73.66,
@@ -56,8 +52,8 @@
       "last_seen": "2026-08-17"
     },
     "leapindia": {
-      "gmp_percent": 8.18,
-      "last_seen": "2026-08-11"
+      "gmp_percent": 4.4,
+      "last_seen": "2026-09-02"
     },
     "luminoindustries": {
       "gmp_percent": 60.98,
@@ -68,8 +64,8 @@
       "last_seen": "2026-08-13"
     },
     "molbiodiagnostics": {
-      "gmp_percent": 17.1,
-      "last_seen": "2026-08-12"
+      "gmp_percent": 15.74,
+      "last_seen": "2026-09-02"
     },
     "mvelectrosystems": {
       "gmp_percent": 27.06,
@@ -105,7 +101,7 @@
     },
     "technocraftventures": {
       "gmp_percent": 14.15,
-      "last_seen": "2026-08-11"
+      "last_seen": "2026-09-02"
     },
     "veegalanddevelopers": {
       "gmp_percent": 10.0,
