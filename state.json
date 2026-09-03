@@ -1,13 +1,7 @@
 {
-  "alerted_ipos": [
-    "technocraftventures",
-    "molbiodiagnostics",
-    "raysofbelief",
-    "deepajewellers",
-    "dhoottransmission"
-  ],
+  "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-09-02",
+  "date": "2026-09-03",
   "gmp_history": {
     "annuprojects": {
       "gmp_percent": 7.07,
