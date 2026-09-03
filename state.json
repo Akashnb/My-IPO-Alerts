@@ -1,5 +1,10 @@
 {
-  "alerted_ipos": [],
+  "alerted_ipos": [
+    "kanoharelectricals",
+    "deepajewellers",
+    "glasswallsystems",
+    "raysofbelief"
+  ],
   "breakage_warned": false,
   "date": "2026-09-03",
   "gmp_history": {
@@ -16,8 +21,8 @@
       "last_seen": "2026-08-17"
     },
     "deepajewellers": {
-      "gmp_percent": 14.69,
-      "last_seen": "2026-09-02"
+      "gmp_percent": 15.82,
+      "last_seen": "2026-09-03"
     },
     "dhoottransmission": {
       "gmp_percent": 28.7,
@@ -31,6 +36,10 @@
       "gmp_percent": 73.66,
       "last_seen": "2026-09-01"
     },
+    "glasswallsystems": {
+      "gmp_percent": 10.99,
+      "last_seen": "2026-09-03"
+    },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
       "last_seen": "2026-08-17"
@@ -42,6 +51,10 @@
     "junipergreenenergy": {
       "gmp_percent": 0.89,
       "last_seen": "2026-08-03"
+    },
+    "kanoharelectricals": {
+      "gmp_percent": 22.15,
+      "last_seen": "2026-09-03"
     },
     "lalithaajewellerymar": {
       "gmp_percent": 14.92,
@@ -71,6 +84,10 @@
       "gmp_percent": 0.0,
       "last_seen": "2026-08-27"
     },
+    "prasolchemicals": {
+      "gmp_percent": 2.07,
+      "last_seen": "2026-09-03"
+    },
     "priorityjewels": {
       "gmp_percent": 22.5,
       "last_seen": "2026-09-01"
@@ -80,8 +97,8 @@
       "last_seen": "2026-09-01"
     },
     "raysofbelief": {
-      "gmp_percent": 12.55,
-      "last_seen": "2026-09-02"
+      "gmp_percent": 19.67,
+      "last_seen": "2026-09-03"
     },
     "shiprocket": {
       "gmp_percent": 34.02,
@@ -112,6 +129,10 @@
     "beharilalengineering": {
       "cached_at": "2026-08-12",
       "lot_size": 52
+    },
+    "deepajewellers": {
+      "cached_at": "2026-09-03",
+      "lot_size": 84
     },
     "dhoottransmission": {
       "cached_at": "2026-08-10",
@@ -149,6 +170,10 @@
     "priorityjewels": {
       "cached_at": "2026-08-28",
       "lot_size": 75
+    },
+    "raysofbelief": {
+      "cached_at": "2026-09-03",
+      "lot_size": 62
     },
     "shiprocket": {
       "cached_at": "2026-08-12",
