@@ -1,6 +1,15 @@
 {
   "alerted_ipos": [
-    "pranavconstructions"
+    "glasswallsystems",
+    "karamtaraengineering",
+    "veegalanddevelopers",
+    "prasolchemicals",
+    "manikaplastech",
+    "kanoharelectricals",
+    "manipalpaymentandide",
+    "pranavconstructions",
+    "lccprojects",
+    "rentomojo"
   ],
   "breakage_warned": false,
   "date": "2026-09-07",
@@ -15,7 +24,7 @@
     },
     "assetreconstruction": {
       "gmp_percent": 0.0,
-      "last_seen": "2026-09-04"
+      "last_seen": "2026-09-07"
     },
     "beharilalengineering": {
       "gmp_percent": 29.82,
@@ -38,8 +47,8 @@
       "last_seen": "2026-09-01"
     },
     "glasswallsystems": {
-      "gmp_percent": 10.99,
-      "last_seen": "2026-09-04"
+      "gmp_percent": 20.88,
+      "last_seen": "2026-09-07"
     },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
@@ -55,11 +64,19 @@
     },
     "kanoharelectricals": {
       "gmp_percent": 31.65,
-      "last_seen": "2026-09-04"
+      "last_seen": "2026-09-07"
+    },
+    "karamtaraengineering": {
+      "gmp_percent": 22.05,
+      "last_seen": "2026-09-07"
     },
     "lalithaajewellerymar": {
       "gmp_percent": 14.92,
       "last_seen": "2026-08-17"
+    },
+    "lccprojects": {
+      "gmp_percent": 17.12,
+      "last_seen": "2026-09-07"
     },
     "leapindia": {
       "gmp_percent": 4.4,
@@ -69,9 +86,13 @@
       "gmp_percent": 60.98,
       "last_seen": "2026-09-01"
     },
+    "manikaplastech": {
+      "gmp_percent": 16.28,
+      "last_seen": "2026-09-07"
+    },
     "manipalpaymentandide": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-09-04"
+      "gmp_percent": 10.03,
+      "last_seen": "2026-09-07"
     },
     "milkymist": {
       "gmp_percent": 15.71,
@@ -94,8 +115,8 @@
       "last_seen": "2026-09-07"
     },
     "prasolchemicals": {
-      "gmp_percent": 2.07,
-      "last_seen": "2026-09-04"
+      "gmp_percent": 13.31,
+      "last_seen": "2026-09-07"
     },
     "priorityjewels": {
       "gmp_percent": 22.5,
@@ -109,6 +130,10 @@
       "gmp_percent": 19.67,
       "last_seen": "2026-09-03"
     },
+    "rentomojo": {
+      "gmp_percent": 35.15,
+      "last_seen": "2026-09-07"
+    },
     "shiprocket": {
       "gmp_percent": 34.02,
       "last_seen": "2026-08-17"
@@ -116,6 +141,10 @@
     "skywaysairservices": {
       "gmp_percent": 21.01,
       "last_seen": "2026-08-26"
+    },
+    "steamhouse": {
+      "gmp_percent": 0.0,
+      "last_seen": "2026-09-07"
     },
     "symbiotecpharmalab": {
       "gmp_percent": 35.63,
@@ -126,8 +155,8 @@
       "last_seen": "2026-09-02"
     },
     "veegalanddevelopers": {
-      "gmp_percent": 12.86,
-      "last_seen": "2026-09-04"
+      "gmp_percent": 21.43,
+      "last_seen": "2026-09-07"
     }
   },
   "lot_size_cache": {
