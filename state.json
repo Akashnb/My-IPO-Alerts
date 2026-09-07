@@ -1,12 +1,9 @@
 {
   "alerted_ipos": [
-    "veegalanddevelopers",
-    "pranavconstructions",
-    "glasswallsystems",
-    "kanoharelectricals"
+    "pranavconstructions"
   ],
   "breakage_warned": false,
-  "date": "2026-09-04",
+  "date": "2026-09-07",
   "gmp_history": {
     "annuprojects": {
       "gmp_percent": 7.07,
@@ -93,8 +90,8 @@
       "last_seen": "2026-08-27"
     },
     "pranavconstructions": {
-      "gmp_percent": 25.0,
-      "last_seen": "2026-09-04"
+      "gmp_percent": 35.48,
+      "last_seen": "2026-09-07"
     },
     "prasolchemicals": {
       "gmp_percent": 2.07,
@@ -179,6 +176,10 @@
       "lot_size": 18
     },
     "mvelectrosystems": 34,
+    "pranavconstructions": {
+      "cached_at": "2026-09-07",
+      "lot_size": 120
+    },
     "priorityjewels": {
       "cached_at": "2026-08-28",
       "lot_size": 75
