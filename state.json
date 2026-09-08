@@ -1,18 +1,7 @@
 {
-  "alerted_ipos": [
-    "glasswallsystems",
-    "karamtaraengineering",
-    "veegalanddevelopers",
-    "prasolchemicals",
-    "manikaplastech",
-    "kanoharelectricals",
-    "manipalpaymentandide",
-    "pranavconstructions",
-    "lccprojects",
-    "rentomojo"
-  ],
+  "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-09-07",
+  "date": "2026-09-08",
   "gmp_history": {
     "annuprojects": {
       "gmp_percent": 7.07,
