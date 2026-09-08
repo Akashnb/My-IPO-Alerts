@@ -1,5 +1,9 @@
 {
-  "alerted_ipos": [],
+  "alerted_ipos": [
+    "kanoharelectricals",
+    "glasswallsystems",
+    "pranavconstructions"
+  ],
   "breakage_warned": false,
   "date": "2026-09-08",
   "gmp_history": {
@@ -36,8 +40,8 @@
       "last_seen": "2026-09-01"
     },
     "glasswallsystems": {
-      "gmp_percent": 20.88,
-      "last_seen": "2026-09-07"
+      "gmp_percent": 28.3,
+      "last_seen": "2026-09-08"
     },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
@@ -52,8 +56,8 @@
       "last_seen": "2026-08-03"
     },
     "kanoharelectricals": {
-      "gmp_percent": 31.65,
-      "last_seen": "2026-09-07"
+      "gmp_percent": 32.28,
+      "last_seen": "2026-09-08"
     },
     "karamtaraengineering": {
       "gmp_percent": 22.05,
@@ -101,11 +105,11 @@
     },
     "pranavconstructions": {
       "gmp_percent": 35.48,
-      "last_seen": "2026-09-07"
+      "last_seen": "2026-09-08"
     },
     "prasolchemicals": {
-      "gmp_percent": 13.31,
-      "last_seen": "2026-09-07"
+      "gmp_percent": 9.98,
+      "last_seen": "2026-09-08"
     },
     "priorityjewels": {
       "gmp_percent": 22.5,
@@ -169,9 +173,17 @@
       "cached_at": "2026-08-28",
       "lot_size": 34
     },
+    "glasswallsystems": {
+      "cached_at": "2026-09-08",
+      "lot_size": 82
+    },
     "hytechengineers": {
       "cached_at": "2026-08-26",
       "lot_size": 283
+    },
+    "kanoharelectricals": {
+      "cached_at": "2026-09-08",
+      "lot_size": 23
     },
     "lalithaajewellerymar": {
       "cached_at": "2026-08-17",
