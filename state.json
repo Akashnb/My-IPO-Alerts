@@ -1,11 +1,19 @@
 {
   "alerted_ipos": [
+    "steamhouseindia",
     "kanoharelectricals",
-    "glasswallsystems",
-    "pranavconstructions"
+    "pranavconstructions",
+    "steamhouse",
+    "manipalpayment",
+    "karamtaraengineering",
+    "assetreconstruction",
+    "lccprojects",
+    "rentomojo",
+    "manipalpaymentandide",
+    "glasswallsystems"
   ],
   "breakage_warned": false,
-  "date": "2026-09-08",
+  "date": "2026-09-09",
   "gmp_history": {
     "annuprojects": {
       "gmp_percent": 7.07,
@@ -16,8 +24,8 @@
       "last_seen": "2026-08-07"
     },
     "assetreconstruction": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-09-07"
+      "gmp_percent": 20.5,
+      "last_seen": "2026-09-09"
     },
     "beharilalengineering": {
       "gmp_percent": 29.82,
@@ -40,8 +48,8 @@
       "last_seen": "2026-09-01"
     },
     "glasswallsystems": {
-      "gmp_percent": 28.3,
-      "last_seen": "2026-09-08"
+      "gmp_percent": 30.49,
+      "last_seen": "2026-09-09"
     },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
@@ -56,20 +64,20 @@
       "last_seen": "2026-08-03"
     },
     "kanoharelectricals": {
-      "gmp_percent": 32.28,
-      "last_seen": "2026-09-08"
+      "gmp_percent": 34.49,
+      "last_seen": "2026-09-09"
     },
     "karamtaraengineering": {
-      "gmp_percent": 22.05,
-      "last_seen": "2026-09-07"
+      "gmp_percent": 26.97,
+      "last_seen": "2026-09-09"
     },
     "lalithaajewellerymar": {
       "gmp_percent": 14.92,
       "last_seen": "2026-08-17"
     },
     "lccprojects": {
-      "gmp_percent": 17.12,
-      "last_seen": "2026-09-07"
+      "gmp_percent": 23.29,
+      "last_seen": "2026-09-09"
     },
     "leapindia": {
       "gmp_percent": 4.4,
@@ -83,9 +91,13 @@
       "gmp_percent": 16.28,
       "last_seen": "2026-09-07"
     },
+    "manipalpayment": {
+      "gmp_percent": 11.21,
+      "last_seen": "2026-09-09"
+    },
     "manipalpaymentandide": {
-      "gmp_percent": 10.03,
-      "last_seen": "2026-09-07"
+      "gmp_percent": 10.91,
+      "last_seen": "2026-09-09"
     },
     "milkymist": {
       "gmp_percent": 15.71,
@@ -105,11 +117,11 @@
     },
     "pranavconstructions": {
       "gmp_percent": 35.48,
-      "last_seen": "2026-09-08"
+      "last_seen": "2026-09-09"
     },
     "prasolchemicals": {
-      "gmp_percent": 9.98,
-      "last_seen": "2026-09-08"
+      "gmp_percent": 5.18,
+      "last_seen": "2026-09-09"
     },
     "priorityjewels": {
       "gmp_percent": 22.5,
@@ -124,8 +136,8 @@
       "last_seen": "2026-09-03"
     },
     "rentomojo": {
-      "gmp_percent": 35.15,
-      "last_seen": "2026-09-07"
+      "gmp_percent": 33.3,
+      "last_seen": "2026-09-09"
     },
     "shiprocket": {
       "gmp_percent": 34.02,
@@ -136,8 +148,12 @@
       "last_seen": "2026-08-26"
     },
     "steamhouse": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-09-07"
+      "gmp_percent": 22.22,
+      "last_seen": "2026-09-09"
+    },
+    "steamhouseindia": {
+      "gmp_percent": 22.22,
+      "last_seen": "2026-09-09"
     },
     "symbiotecpharmalab": {
       "gmp_percent": 35.63,
@@ -156,6 +172,10 @@
     "ardeeindustries": {
       "cached_at": "2026-08-05",
       "lot_size": 281
+    },
+    "assetreconstruction": {
+      "cached_at": "2026-09-09",
+      "lot_size": 107
     },
     "beharilalengineering": {
       "cached_at": "2026-08-12",
@@ -185,9 +205,17 @@
       "cached_at": "2026-09-08",
       "lot_size": 23
     },
+    "karamtaraengineering": {
+      "cached_at": "2026-09-09",
+      "lot_size": 59
+    },
     "lalithaajewellerymar": {
       "cached_at": "2026-08-17",
       "lot_size": 74
+    },
+    "lccprojects": {
+      "cached_at": "2026-09-09",
+      "lot_size": 102
     },
     "leapindia": {
       "cached_at": "2026-08-10",
@@ -196,6 +224,10 @@
     "luminoindustries": {
       "cached_at": "2026-08-28",
       "lot_size": 182
+    },
+    "manipalpayment": {
+      "cached_at": "2026-09-09",
+      "lot_size": 44
     },
     "milkymist": {
       "cached_at": "2026-08-12",
@@ -218,6 +250,10 @@
       "cached_at": "2026-09-03",
       "lot_size": 62
     },
+    "rentomojo": {
+      "cached_at": "2026-09-09",
+      "lot_size": 37
+    },
     "shiprocket": {
       "cached_at": "2026-08-12",
       "lot_size": 154
@@ -225,6 +261,10 @@
     "skywaysairservices": {
       "cached_at": "2026-08-26",
       "lot_size": 100
+    },
+    "steamhouseindia": {
+      "cached_at": "2026-09-09",
+      "lot_size": 185
     },
     "symbiotecpharmalab": {
       "cached_at": "2026-08-26",
