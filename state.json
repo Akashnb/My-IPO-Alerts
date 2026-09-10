@@ -1,19 +1,13 @@
 {
   "alerted_ipos": [
-    "steamhouseindia",
-    "kanoharelectricals",
-    "pranavconstructions",
-    "steamhouse",
-    "manipalpayment",
-    "karamtaraengineering",
     "assetreconstruction",
     "lccprojects",
-    "rentomojo",
-    "manipalpaymentandide",
-    "glasswallsystems"
+    "steamhouse",
+    "karamtaraengineering",
+    "rentomojo"
   ],
   "breakage_warned": false,
-  "date": "2026-09-09",
+  "date": "2026-09-10",
   "gmp_history": {
     "annuprojects": {
       "gmp_percent": 7.07,
@@ -24,8 +18,8 @@
       "last_seen": "2026-08-07"
     },
     "assetreconstruction": {
-      "gmp_percent": 19.78,
-      "last_seen": "2026-09-09"
+      "gmp_percent": 17.27,
+      "last_seen": "2026-09-10"
     },
     "beharilalengineering": {
       "gmp_percent": 29.82,
@@ -68,16 +62,16 @@
       "last_seen": "2026-09-09"
     },
     "karamtaraengineering": {
-      "gmp_percent": 26.38,
-      "last_seen": "2026-09-09"
+      "gmp_percent": 29.53,
+      "last_seen": "2026-09-10"
     },
     "lalithaajewellerymar": {
       "gmp_percent": 14.92,
       "last_seen": "2026-08-17"
     },
     "lccprojects": {
-      "gmp_percent": 25.0,
-      "last_seen": "2026-09-09"
+      "gmp_percent": 30.82,
+      "last_seen": "2026-09-10"
     },
     "leapindia": {
       "gmp_percent": 4.4,
@@ -96,8 +90,8 @@
       "last_seen": "2026-09-09"
     },
     "manipalpaymentandide": {
-      "gmp_percent": 9.73,
-      "last_seen": "2026-09-09"
+      "gmp_percent": 2.36,
+      "last_seen": "2026-09-10"
     },
     "milkymist": {
       "gmp_percent": 15.71,
@@ -136,8 +130,8 @@
       "last_seen": "2026-09-03"
     },
     "rentomojo": {
-      "gmp_percent": 34.03,
-      "last_seen": "2026-09-09"
+      "gmp_percent": 35.4,
+      "last_seen": "2026-09-10"
     },
     "shiprocket": {
       "gmp_percent": 34.02,
@@ -148,8 +142,8 @@
       "last_seen": "2026-08-26"
     },
     "steamhouse": {
-      "gmp_percent": 20.99,
-      "last_seen": "2026-09-09"
+      "gmp_percent": 24.69,
+      "last_seen": "2026-09-10"
     },
     "steamhouseindia": {
       "gmp_percent": 22.22,
