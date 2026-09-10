@@ -1,10 +1,14 @@
 {
   "alerted_ipos": [
+    "glasswallsystems",
     "assetreconstruction",
     "lccprojects",
-    "steamhouse",
+    "steamhouseindia",
     "karamtaraengineering",
-    "rentomojo"
+    "rentomojo",
+    "steamhouse",
+    "veegalanddevelopers",
+    "kanoharelectricals"
   ],
   "breakage_warned": false,
   "date": "2026-09-10",
@@ -18,7 +22,7 @@
       "last_seen": "2026-08-07"
     },
     "assetreconstruction": {
-      "gmp_percent": 17.27,
+      "gmp_percent": 13.13,
       "last_seen": "2026-09-10"
     },
     "beharilalengineering": {
@@ -42,8 +46,8 @@
       "last_seen": "2026-09-01"
     },
     "glasswallsystems": {
-      "gmp_percent": 31.05,
-      "last_seen": "2026-09-09"
+      "gmp_percent": 36.26,
+      "last_seen": "2026-09-10"
     },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
@@ -58,11 +62,11 @@
       "last_seen": "2026-08-03"
     },
     "kanoharelectricals": {
-      "gmp_percent": 35.05,
-      "last_seen": "2026-09-09"
+      "gmp_percent": 35.44,
+      "last_seen": "2026-09-10"
     },
     "karamtaraengineering": {
-      "gmp_percent": 29.53,
+      "gmp_percent": 28.94,
       "last_seen": "2026-09-10"
     },
     "lalithaajewellerymar": {
@@ -70,7 +74,7 @@
       "last_seen": "2026-08-17"
     },
     "lccprojects": {
-      "gmp_percent": 30.82,
+      "gmp_percent": 32.53,
       "last_seen": "2026-09-10"
     },
     "leapindia": {
@@ -86,8 +90,8 @@
       "last_seen": "2026-09-07"
     },
     "manipalpayment": {
-      "gmp_percent": 11.21,
-      "last_seen": "2026-09-09"
+      "gmp_percent": 2.36,
+      "last_seen": "2026-09-10"
     },
     "manipalpaymentandide": {
       "gmp_percent": 2.36,
@@ -114,8 +118,8 @@
       "last_seen": "2026-09-09"
     },
     "prasolchemicals": {
-      "gmp_percent": 2.96,
-      "last_seen": "2026-09-09"
+      "gmp_percent": 5.91,
+      "last_seen": "2026-09-10"
     },
     "priorityjewels": {
       "gmp_percent": 22.5,
@@ -130,7 +134,7 @@
       "last_seen": "2026-09-03"
     },
     "rentomojo": {
-      "gmp_percent": 35.4,
+      "gmp_percent": 35.27,
       "last_seen": "2026-09-10"
     },
     "shiprocket": {
@@ -146,8 +150,8 @@
       "last_seen": "2026-09-10"
     },
     "steamhouseindia": {
-      "gmp_percent": 22.22,
-      "last_seen": "2026-09-09"
+      "gmp_percent": 24.69,
+      "last_seen": "2026-09-10"
     },
     "symbiotecpharmalab": {
       "gmp_percent": 35.63,
@@ -158,8 +162,8 @@
       "last_seen": "2026-09-02"
     },
     "veegalanddevelopers": {
-      "gmp_percent": 21.43,
-      "last_seen": "2026-09-07"
+      "gmp_percent": 17.5,
+      "last_seen": "2026-09-10"
     }
   },
   "lot_size_cache": {
@@ -267,6 +271,10 @@
     "technocraftventures": {
       "cached_at": "2026-08-10",
       "lot_size": 70
+    },
+    "veegalanddevelopers": {
+      "cached_at": "2026-09-10",
+      "lot_size": 107
     }
   },
   "zero_ipo_streak": 0
