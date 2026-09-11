@@ -1,5 +1,7 @@
 {
-  "alerted_ipos": [],
+  "alerted_ipos": [
+    "manikaplastech"
+  ],
   "breakage_warned": false,
   "date": "2026-09-11",
   "gmp_history": {
@@ -76,8 +78,8 @@
       "last_seen": "2026-09-01"
     },
     "manikaplastech": {
-      "gmp_percent": 16.28,
-      "last_seen": "2026-09-07"
+      "gmp_percent": 23.26,
+      "last_seen": "2026-09-11"
     },
     "manipalpayment": {
       "gmp_percent": 2.36,
@@ -152,8 +154,8 @@
       "last_seen": "2026-09-02"
     },
     "veegalanddevelopers": {
-      "gmp_percent": 17.5,
-      "last_seen": "2026-09-10"
+      "gmp_percent": 7.14,
+      "last_seen": "2026-09-11"
     }
   },
   "lot_size_cache": {
