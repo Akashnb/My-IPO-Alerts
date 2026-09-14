@@ -1,6 +1,10 @@
 {
   "alerted_ipos": [
+    "jindalsupreme",
+    "nse",
+    "heromotors",
     "veegalanddevelopers",
+    "ssretail",
     "manikaplastech"
   ],
   "breakage_warned": false,
@@ -42,6 +46,10 @@
       "gmp_percent": 36.26,
       "last_seen": "2026-09-10"
     },
+    "heromotors": {
+      "gmp_percent": 28.57,
+      "last_seen": "2026-09-14"
+    },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
       "last_seen": "2026-08-17"
@@ -49,6 +57,10 @@
     "hytechengineers": {
       "gmp_percent": 56.6,
       "last_seen": "2026-08-26"
+    },
+    "jindalsupreme": {
+      "gmp_percent": 29.03,
+      "last_seen": "2026-09-14"
     },
     "junipergreenenergy": {
       "gmp_percent": 0.89,
@@ -102,6 +114,10 @@
       "gmp_percent": 27.06,
       "last_seen": "2026-08-03"
     },
+    "nse": {
+      "gmp_percent": 11.76,
+      "last_seen": "2026-09-14"
+    },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
       "last_seen": "2026-08-27"
@@ -137,6 +153,10 @@
     "skywaysairservices": {
       "gmp_percent": 21.01,
       "last_seen": "2026-08-26"
+    },
+    "ssretail": {
+      "gmp_percent": 32.08,
+      "last_seen": "2026-09-14"
     },
     "steamhouse": {
       "gmp_percent": 24.69,
