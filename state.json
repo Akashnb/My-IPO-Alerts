@@ -1,14 +1,9 @@
 {
   "alerted_ipos": [
-    "jindalsupreme",
-    "nse",
-    "heromotors",
-    "veegalanddevelopers",
-    "ssretail",
     "manikaplastech"
   ],
   "breakage_warned": false,
-  "date": "2026-09-14",
+  "date": "2026-09-15",
   "gmp_history": {
     "annuprojects": {
       "gmp_percent": 7.07,
@@ -91,8 +86,8 @@
       "last_seen": "2026-09-01"
     },
     "manikaplastech": {
-      "gmp_percent": 24.42,
-      "last_seen": "2026-09-14"
+      "gmp_percent": 25.58,
+      "last_seen": "2026-09-15"
     },
     "manipalpayment": {
       "gmp_percent": 2.36,
