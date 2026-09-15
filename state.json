@@ -1,6 +1,10 @@
 {
   "alerted_ipos": [
-    "manikaplastech"
+    "nse",
+    "manikaplastech",
+    "heromotors",
+    "ssretail",
+    "jindalsupreme"
   ],
   "breakage_warned": false,
   "date": "2026-09-15",
@@ -42,8 +46,8 @@
       "last_seen": "2026-09-10"
     },
     "heromotors": {
-      "gmp_percent": 28.57,
-      "last_seen": "2026-09-14"
+      "gmp_percent": 26.19,
+      "last_seen": "2026-09-15"
     },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
@@ -55,7 +59,7 @@
     },
     "jindalsupreme": {
       "gmp_percent": 29.03,
-      "last_seen": "2026-09-14"
+      "last_seen": "2026-09-15"
     },
     "junipergreenenergy": {
       "gmp_percent": 0.89,
@@ -110,8 +114,8 @@
       "last_seen": "2026-08-03"
     },
     "nse": {
-      "gmp_percent": 11.76,
-      "last_seen": "2026-09-14"
+      "gmp_percent": 10.42,
+      "last_seen": "2026-09-15"
     },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
@@ -149,9 +153,13 @@
       "gmp_percent": 21.01,
       "last_seen": "2026-08-26"
     },
+    "sonaselectionindia": {
+      "gmp_percent": 5.05,
+      "last_seen": "2026-09-15"
+    },
     "ssretail": {
-      "gmp_percent": 32.08,
-      "last_seen": "2026-09-14"
+      "gmp_percent": 34.2,
+      "last_seen": "2026-09-15"
     },
     "steamhouse": {
       "gmp_percent": 24.69,
