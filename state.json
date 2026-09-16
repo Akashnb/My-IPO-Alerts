@@ -1,13 +1,11 @@
 {
   "alerted_ipos": [
-    "nse",
-    "manikaplastech",
-    "heromotors",
     "ssretail",
-    "jindalsupreme"
+    "jindalsupreme",
+    "heromotors"
   ],
   "breakage_warned": false,
-  "date": "2026-09-15",
+  "date": "2026-09-16",
   "gmp_history": {
     "annuprojects": {
       "gmp_percent": 7.07,
@@ -46,8 +44,8 @@
       "last_seen": "2026-09-10"
     },
     "heromotors": {
-      "gmp_percent": 26.19,
-      "last_seen": "2026-09-15"
+      "gmp_percent": 22.62,
+      "last_seen": "2026-09-16"
     },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
@@ -59,7 +57,7 @@
     },
     "jindalsupreme": {
       "gmp_percent": 29.03,
-      "last_seen": "2026-09-15"
+      "last_seen": "2026-09-16"
     },
     "junipergreenenergy": {
       "gmp_percent": 0.89,
@@ -90,8 +88,8 @@
       "last_seen": "2026-09-01"
     },
     "manikaplastech": {
-      "gmp_percent": 25.58,
-      "last_seen": "2026-09-15"
+      "gmp_percent": 6.98,
+      "last_seen": "2026-09-16"
     },
     "manipalpayment": {
       "gmp_percent": 2.36,
@@ -114,8 +112,8 @@
       "last_seen": "2026-08-03"
     },
     "nse": {
-      "gmp_percent": 10.42,
-      "last_seen": "2026-09-15"
+      "gmp_percent": 8.96,
+      "last_seen": "2026-09-16"
     },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
@@ -154,12 +152,12 @@
       "last_seen": "2026-08-26"
     },
     "sonaselectionindia": {
-      "gmp_percent": 5.05,
-      "last_seen": "2026-09-15"
+      "gmp_percent": 8.08,
+      "last_seen": "2026-09-16"
     },
     "ssretail": {
-      "gmp_percent": 34.2,
-      "last_seen": "2026-09-15"
+      "gmp_percent": 30.19,
+      "last_seen": "2026-09-16"
     },
     "steamhouse": {
       "gmp_percent": 24.69,
@@ -211,9 +209,17 @@
       "cached_at": "2026-09-08",
       "lot_size": 82
     },
+    "heromotors": {
+      "cached_at": "2026-09-16",
+      "lot_size": 178
+    },
     "hytechengineers": {
       "cached_at": "2026-08-26",
       "lot_size": 283
+    },
+    "jindalsupreme": {
+      "cached_at": "2026-09-16",
+      "lot_size": 161
     },
     "kanoharelectricals": {
       "cached_at": "2026-09-08",
@@ -279,6 +285,10 @@
     "skywaysairservices": {
       "cached_at": "2026-08-26",
       "lot_size": 100
+    },
+    "ssretail": {
+      "cached_at": "2026-09-16",
+      "lot_size": 35
     },
     "steamhouseindia": {
       "cached_at": "2026-09-09",
