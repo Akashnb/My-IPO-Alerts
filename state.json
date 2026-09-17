@@ -1,11 +1,11 @@
 {
   "alerted_ipos": [
     "ssretail",
-    "jindalsupreme",
-    "heromotors"
+    "heromotors",
+    "jindalsupreme"
   ],
   "breakage_warned": false,
-  "date": "2026-09-16",
+  "date": "2026-09-17",
   "gmp_history": {
     "annuprojects": {
       "gmp_percent": 7.07,
@@ -44,8 +44,8 @@
       "last_seen": "2026-09-10"
     },
     "heromotors": {
-      "gmp_percent": 5.95,
-      "last_seen": "2026-09-16"
+      "gmp_percent": 15.48,
+      "last_seen": "2026-09-17"
     },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
@@ -56,8 +56,8 @@
       "last_seen": "2026-08-26"
     },
     "jindalsupreme": {
-      "gmp_percent": 25.81,
-      "last_seen": "2026-09-16"
+      "gmp_percent": 26.88,
+      "last_seen": "2026-09-17"
     },
     "junipergreenenergy": {
       "gmp_percent": 0.89,
@@ -112,8 +112,8 @@
       "last_seen": "2026-08-03"
     },
     "nse": {
-      "gmp_percent": 8.96,
-      "last_seen": "2026-09-16"
+      "gmp_percent": 7.0,
+      "last_seen": "2026-09-17"
     },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
@@ -152,12 +152,12 @@
       "last_seen": "2026-08-26"
     },
     "sonaselectionindia": {
-      "gmp_percent": 8.08,
-      "last_seen": "2026-09-16"
+      "gmp_percent": 7.07,
+      "last_seen": "2026-09-17"
     },
     "ssretail": {
-      "gmp_percent": 24.76,
-      "last_seen": "2026-09-16"
+      "gmp_percent": 18.87,
+      "last_seen": "2026-09-17"
     },
     "steamhouse": {
       "gmp_percent": 24.69,
