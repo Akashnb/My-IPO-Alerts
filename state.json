@@ -1,15 +1,31 @@
 {
-  "alerted_ipos": [],
+  "alerted_ipos": [
+    "jindalsupreme",
+    "aonesteels",
+    "ssretail"
+  ],
   "breakage_warned": false,
   "date": "2026-09-18",
   "gmp_history": {
+    "adroitindustries": {
+      "gmp_percent": 0.0,
+      "last_seen": "2026-09-18"
+    },
     "annuprojects": {
       "gmp_percent": 7.07,
       "last_seen": "2026-08-28"
     },
+    "aonesteels": {
+      "gmp_percent": 13.83,
+      "last_seen": "2026-09-18"
+    },
     "ardeeindustries": {
       "gmp_percent": 28.3,
       "last_seen": "2026-08-07"
+    },
+    "armeeinfotech": {
+      "gmp_percent": 0.0,
+      "last_seen": "2026-09-18"
     },
     "assetreconstruction": {
       "gmp_percent": 13.13,
@@ -26,6 +42,10 @@
     "dhoottransmission": {
       "gmp_percent": 28.7,
       "last_seen": "2026-09-02"
+    },
+    "elevatecampuses": {
+      "gmp_percent": 0.0,
+      "last_seen": "2026-09-18"
     },
     "esdssoftware": {
       "gmp_percent": 73.66,
@@ -52,8 +72,8 @@
       "last_seen": "2026-08-26"
     },
     "jindalsupreme": {
-      "gmp_percent": 26.88,
-      "last_seen": "2026-09-17"
+      "gmp_percent": 32.26,
+      "last_seen": "2026-09-18"
     },
     "junipergreenenergy": {
       "gmp_percent": 0.89,
@@ -112,7 +132,7 @@
       "last_seen": "2026-08-03"
     },
     "nse": {
-      "gmp_percent": 8.12,
+      "gmp_percent": 8.29,
       "last_seen": "2026-09-18"
     },
     "perniaspopupstudio": {
@@ -160,8 +180,8 @@
       "last_seen": "2026-09-17"
     },
     "ssretail": {
-      "gmp_percent": 18.87,
-      "last_seen": "2026-09-17"
+      "gmp_percent": 32.31,
+      "last_seen": "2026-09-18"
     },
     "steamhouse": {
       "gmp_percent": 24.69,
@@ -171,6 +191,10 @@
       "gmp_percent": 24.69,
       "last_seen": "2026-09-10"
     },
+    "swastikainfra": {
+      "gmp_percent": 1.62,
+      "last_seen": "2026-09-18"
+    },
     "symbiotecpharmalab": {
       "gmp_percent": 35.63,
       "last_seen": "2026-08-26"
@@ -178,6 +202,10 @@
     "technocraftventures": {
       "gmp_percent": 14.15,
       "last_seen": "2026-09-02"
+    },
+    "varmoragranito": {
+      "gmp_percent": 4.73,
+      "last_seen": "2026-09-18"
     },
     "veegalanddevelopers": {
       "gmp_percent": 10.71,
