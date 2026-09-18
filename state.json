@@ -1,12 +1,7 @@
 {
-  "alerted_ipos": [
-    "heromotors",
-    "ssretail",
-    "jindalsupreme",
-    "spectraatechnologyso"
-  ],
+  "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-09-17",
+  "date": "2026-09-18",
   "gmp_history": {
     "annuprojects": {
       "gmp_percent": 7.07,
@@ -45,8 +40,8 @@
       "last_seen": "2026-09-10"
     },
     "heromotors": {
-      "gmp_percent": 15.48,
-      "last_seen": "2026-09-17"
+      "gmp_percent": 7.14,
+      "last_seen": "2026-09-18"
     },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
@@ -117,8 +112,8 @@
       "last_seen": "2026-08-03"
     },
     "nse": {
-      "gmp_percent": 7.76,
-      "last_seen": "2026-09-17"
+      "gmp_percent": 8.12,
+      "last_seen": "2026-09-18"
     },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
@@ -157,8 +152,8 @@
       "last_seen": "2026-08-26"
     },
     "sonaselectionindia": {
-      "gmp_percent": 7.07,
-      "last_seen": "2026-09-17"
+      "gmp_percent": 2.02,
+      "last_seen": "2026-09-18"
     },
     "spectraatechnologyso": {
       "gmp_percent": 25.42,
