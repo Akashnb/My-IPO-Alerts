@@ -1,11 +1,7 @@
 {
-  "alerted_ipos": [
-    "jindalsupreme",
-    "aonesteels",
-    "ssretail"
-  ],
+  "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-09-18",
+  "date": "2026-09-21",
   "gmp_history": {
     "adroitindustries": {
       "gmp_percent": 0.0,
@@ -132,8 +128,8 @@
       "last_seen": "2026-08-03"
     },
     "nse": {
-      "gmp_percent": 8.29,
-      "last_seen": "2026-09-18"
+      "gmp_percent": 2.69,
+      "last_seen": "2026-09-21"
     },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
@@ -172,8 +168,8 @@
       "last_seen": "2026-08-26"
     },
     "sonaselectionindia": {
-      "gmp_percent": 2.02,
-      "last_seen": "2026-09-18"
+      "gmp_percent": 0.0,
+      "last_seen": "2026-09-21"
     },
     "spectraatechnologyso": {
       "gmp_percent": 25.42,
