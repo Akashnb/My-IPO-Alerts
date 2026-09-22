@@ -1,14 +1,15 @@
 {
   "alerted_ipos": [
-    "aonesteels",
-    "adroitindustries"
+    "moneyview",
+    "adroitindustries",
+    "aonesteels"
   ],
   "breakage_warned": false,
-  "date": "2026-09-21",
+  "date": "2026-09-22",
   "gmp_history": {
     "adroitindustries": {
       "gmp_percent": 23.88,
-      "last_seen": "2026-09-21"
+      "last_seen": "2026-09-22"
     },
     "annuprojects": {
       "gmp_percent": 7.07,
@@ -16,15 +17,15 @@
     },
     "aonesteels": {
       "gmp_percent": 14.81,
-      "last_seen": "2026-09-21"
+      "last_seen": "2026-09-22"
     },
     "ardeeindustries": {
       "gmp_percent": 28.3,
       "last_seen": "2026-08-07"
     },
     "armeeinfotech": {
-      "gmp_percent": 0.27,
-      "last_seen": "2026-09-21"
+      "gmp_percent": 3.2,
+      "last_seen": "2026-09-22"
     },
     "assetreconstruction": {
       "gmp_percent": 13.13,
@@ -44,7 +45,7 @@
     },
     "elevatecampuses": {
       "gmp_percent": 4.42,
-      "last_seen": "2026-09-21"
+      "last_seen": "2026-09-22"
     },
     "esdssoftware": {
       "gmp_percent": 73.66,
@@ -127,8 +128,8 @@
       "last_seen": "2026-09-02"
     },
     "moneyview": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-09-21"
+      "gmp_percent": 14.71,
+      "last_seen": "2026-09-22"
     },
     "mvelectrosystems": {
       "gmp_percent": 27.06,
@@ -195,8 +196,8 @@
       "last_seen": "2026-09-10"
     },
     "swastikainfra": {
-      "gmp_percent": 1.62,
-      "last_seen": "2026-09-21"
+      "gmp_percent": 4.32,
+      "last_seen": "2026-09-22"
     },
     "symbiotecpharmalab": {
       "gmp_percent": 35.63,
@@ -207,8 +208,8 @@
       "last_seen": "2026-09-02"
     },
     "varmoragranito": {
-      "gmp_percent": 6.08,
-      "last_seen": "2026-09-21"
+      "gmp_percent": 3.38,
+      "last_seen": "2026-09-22"
     },
     "veegalanddevelopers": {
       "gmp_percent": 10.71,
