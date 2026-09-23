@@ -1,15 +1,14 @@
 {
   "alerted_ipos": [
-    "moneyview",
     "adroitindustries",
-    "aonesteels"
+    "armeeinfotech"
   ],
   "breakage_warned": false,
-  "date": "2026-09-22",
+  "date": "2026-09-23",
   "gmp_history": {
     "adroitindustries": {
-      "gmp_percent": 23.88,
-      "last_seen": "2026-09-22"
+      "gmp_percent": 25.37,
+      "last_seen": "2026-09-23"
     },
     "annuprojects": {
       "gmp_percent": 7.07,
@@ -24,8 +23,8 @@
       "last_seen": "2026-08-07"
     },
     "armeeinfotech": {
-      "gmp_percent": 3.2,
-      "last_seen": "2026-09-22"
+      "gmp_percent": 12.27,
+      "last_seen": "2026-09-23"
     },
     "assetreconstruction": {
       "gmp_percent": 13.13,
@@ -44,8 +43,8 @@
       "last_seen": "2026-09-02"
     },
     "elevatecampuses": {
-      "gmp_percent": 4.42,
-      "last_seen": "2026-09-22"
+      "gmp_percent": 1.38,
+      "last_seen": "2026-09-23"
     },
     "esdssoftware": {
       "gmp_percent": 73.66,
@@ -197,7 +196,7 @@
     },
     "swastikainfra": {
       "gmp_percent": 4.32,
-      "last_seen": "2026-09-22"
+      "last_seen": "2026-09-23"
     },
     "symbiotecpharmalab": {
       "gmp_percent": 35.63,
@@ -208,8 +207,8 @@
       "last_seen": "2026-09-02"
     },
     "varmoragranito": {
-      "gmp_percent": 3.38,
-      "last_seen": "2026-09-22"
+      "gmp_percent": 2.03,
+      "last_seen": "2026-09-23"
     },
     "veegalanddevelopers": {
       "gmp_percent": 10.71,
