@@ -1,14 +1,7 @@
 {
-  "alerted_ipos": [
-    "orientcables",
-    "adroitindustries",
-    "moneyview",
-    "germangreensteel",
-    "armeeinfotech",
-    "aonesteels"
-  ],
+  "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-09-24",
+  "date": "2026-09-25",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 0.0,
