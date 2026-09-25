@@ -1,11 +1,16 @@
 {
-  "alerted_ipos": [],
+  "alerted_ipos": [
+    "orientcables",
+    "moneyview",
+    "germangreensteel",
+    "aonesteels"
+  ],
   "breakage_warned": false,
   "date": "2026-09-25",
   "gmp_history": {
     "acevector": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-09-24"
+      "gmp_percent": 9.38,
+      "last_seen": "2026-09-25"
     },
     "adroitindustries": {
       "gmp_percent": 25.37,
@@ -16,8 +21,8 @@
       "last_seen": "2026-08-28"
     },
     "aonesteels": {
-      "gmp_percent": 13.58,
-      "last_seen": "2026-09-24"
+      "gmp_percent": 12.1,
+      "last_seen": "2026-09-25"
     },
     "ardeeindustries": {
       "gmp_percent": 28.3,
@@ -56,8 +61,8 @@
       "last_seen": "2026-09-01"
     },
     "germangreensteel": {
-      "gmp_percent": 17.99,
-      "last_seen": "2026-09-24"
+      "gmp_percent": 22.66,
+      "last_seen": "2026-09-25"
     },
     "glasswallsystems": {
       "gmp_percent": 36.26,
@@ -66,6 +71,10 @@
     "heromotors": {
       "gmp_percent": 7.14,
       "last_seen": "2026-09-18"
+    },
+    "himalayansolar": {
+      "gmp_percent": 0.0,
+      "last_seen": "2026-09-25"
     },
     "horizonindustrialpar": {
       "gmp_percent": 6.67,
@@ -132,8 +141,8 @@
       "last_seen": "2026-09-02"
     },
     "moneyview": {
-      "gmp_percent": 39.71,
-      "last_seen": "2026-09-24"
+      "gmp_percent": 42.65,
+      "last_seen": "2026-09-25"
     },
     "mvelectrosystems": {
       "gmp_percent": 27.06,
@@ -144,8 +153,8 @@
       "last_seen": "2026-09-21"
     },
     "orientcables": {
-      "gmp_percent": 18.57,
-      "last_seen": "2026-09-24"
+      "gmp_percent": 38.6,
+      "last_seen": "2026-09-25"
     },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
@@ -176,8 +185,8 @@
       "last_seen": "2026-09-10"
     },
     "runwalenterprises": {
-      "gmp_percent": 7.54,
-      "last_seen": "2026-09-24"
+      "gmp_percent": 2.3,
+      "last_seen": "2026-09-25"
     },
     "shahinvestorshome": {
       "gmp_percent": 5.99,
