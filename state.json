@@ -1,16 +1,16 @@
 {
   "alerted_ipos": [
-    "orientcables",
     "moneyview",
-    "germangreensteel",
-    "aonesteels"
+    "aonesteels",
+    "orientcables",
+    "germangreensteel"
   ],
   "breakage_warned": false,
-  "date": "2026-09-25",
+  "date": "2026-09-28",
   "gmp_history": {
     "acevector": {
-      "gmp_percent": 9.38,
-      "last_seen": "2026-09-25"
+      "gmp_percent": 6.25,
+      "last_seen": "2026-09-28"
     },
     "adroitindustries": {
       "gmp_percent": 25.37,
@@ -21,8 +21,8 @@
       "last_seen": "2026-08-28"
     },
     "aonesteels": {
-      "gmp_percent": 12.1,
-      "last_seen": "2026-09-25"
+      "gmp_percent": 13.83,
+      "last_seen": "2026-09-28"
     },
     "ardeeindustries": {
       "gmp_percent": 28.3,
@@ -61,8 +61,8 @@
       "last_seen": "2026-09-01"
     },
     "germangreensteel": {
-      "gmp_percent": 22.66,
-      "last_seen": "2026-09-25"
+      "gmp_percent": 20.86,
+      "last_seen": "2026-09-28"
     },
     "glasswallsystems": {
       "gmp_percent": 36.26,
@@ -141,8 +141,8 @@
       "last_seen": "2026-09-02"
     },
     "moneyview": {
-      "gmp_percent": 42.65,
-      "last_seen": "2026-09-25"
+      "gmp_percent": 41.18,
+      "last_seen": "2026-09-28"
     },
     "mvelectrosystems": {
       "gmp_percent": 27.06,
@@ -153,8 +153,8 @@
       "last_seen": "2026-09-21"
     },
     "orientcables": {
-      "gmp_percent": 38.6,
-      "last_seen": "2026-09-25"
+      "gmp_percent": 33.09,
+      "last_seen": "2026-09-28"
     },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
@@ -185,8 +185,8 @@
       "last_seen": "2026-09-10"
     },
     "runwalenterprises": {
-      "gmp_percent": 2.3,
-      "last_seen": "2026-09-25"
+      "gmp_percent": 4.59,
+      "last_seen": "2026-09-28"
     },
     "shahinvestorshome": {
       "gmp_percent": 5.99,
@@ -282,6 +282,10 @@
       "cached_at": "2026-08-28",
       "lot_size": 34
     },
+    "germangreensteel": {
+      "cached_at": "2026-09-28",
+      "lot_size": 107
+    },
     "glasswallsystems": {
       "cached_at": "2026-09-08",
       "lot_size": 82
@@ -343,6 +347,10 @@
       "lot_size": 441
     },
     "mvelectrosystems": 34,
+    "orientcables": {
+      "cached_at": "2026-09-28",
+      "lot_size": 55
+    },
     "pranavconstructions": {
       "cached_at": "2026-09-07",
       "lot_size": 120
