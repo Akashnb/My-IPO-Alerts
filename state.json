@@ -1,11 +1,15 @@
 {
-  "alerted_ipos": [],
+  "alerted_ipos": [
+    "sritindia",
+    "orientcables",
+    "germangreensteel"
+  ],
   "breakage_warned": false,
   "date": "2026-09-29",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
-      "last_seen": "2026-09-28"
+      "last_seen": "2026-09-29"
     },
     "adroitindustries": {
       "gmp_percent": 25.37,
@@ -56,8 +60,8 @@
       "last_seen": "2026-09-01"
     },
     "germangreensteel": {
-      "gmp_percent": 20.86,
-      "last_seen": "2026-09-28"
+      "gmp_percent": 17.98,
+      "last_seen": "2026-09-29"
     },
     "glasswallsystems": {
       "gmp_percent": 36.26,
@@ -148,8 +152,8 @@
       "last_seen": "2026-09-21"
     },
     "orientcables": {
-      "gmp_percent": 33.09,
-      "last_seen": "2026-09-28"
+      "gmp_percent": 26.47,
+      "last_seen": "2026-09-29"
     },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
@@ -181,11 +185,11 @@
     },
     "runwalenterprises": {
       "gmp_percent": 4.59,
-      "last_seen": "2026-09-28"
+      "last_seen": "2026-09-29"
     },
     "shahinvestorshome": {
-      "gmp_percent": 5.99,
-      "last_seen": "2026-09-24"
+      "gmp_percent": 8.38,
+      "last_seen": "2026-09-29"
     },
     "shiprocket": {
       "gmp_percent": 34.02,
@@ -204,8 +208,8 @@
       "last_seen": "2026-09-17"
     },
     "sritindia": {
-      "gmp_percent": 9.23,
-      "last_seen": "2026-09-24"
+      "gmp_percent": 25.38,
+      "last_seen": "2026-09-29"
     },
     "ssretail": {
       "gmp_percent": 32.31,
@@ -369,6 +373,10 @@
     "skywaysairservices": {
       "cached_at": "2026-08-26",
       "lot_size": 100
+    },
+    "sritindia": {
+      "cached_at": "2026-09-29",
+      "lot_size": 115
     },
     "ssretail": {
       "cached_at": "2026-09-16",
