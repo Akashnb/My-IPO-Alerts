@@ -143,6 +143,10 @@
       "gmp_percent": 27.06,
       "last_seen": "2026-08-03"
     },
+    "nityasgems": {
+      "gmp_percent": 4.0,
+      "last_seen": "2026-10-02"
+    },
     "nse": {
       "gmp_percent": 2.69,
       "last_seen": "2026-09-21"
@@ -238,6 +242,10 @@
     "veegalanddevelopers": {
       "gmp_percent": 10.71,
       "last_seen": "2026-09-14"
+    },
+    "vishalnirmiti": {
+      "gmp_percent": 9.09,
+      "last_seen": "2026-10-02"
     }
   },
   "lot_size_cache": {
