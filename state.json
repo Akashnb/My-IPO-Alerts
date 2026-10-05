@@ -1,7 +1,7 @@
 {
   "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-10-02",
+  "date": "2026-10-05",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -83,10 +83,6 @@
       "gmp_percent": 32.26,
       "last_seen": "2026-09-18"
     },
-    "junipergreenenergy": {
-      "gmp_percent": 0.89,
-      "last_seen": "2026-08-03"
-    },
     "kanoharelectricals": {
       "gmp_percent": 35.44,
       "last_seen": "2026-09-10"
@@ -138,10 +134,6 @@
     "moneyview": {
       "gmp_percent": 41.18,
       "last_seen": "2026-09-28"
-    },
-    "mvelectrosystems": {
-      "gmp_percent": 27.06,
-      "last_seen": "2026-08-03"
     },
     "nityasgems": {
       "gmp_percent": 4.0,
@@ -256,10 +248,6 @@
     "aonesteels": {
       "cached_at": "2026-09-24",
       "lot_size": 37
-    },
-    "ardeeindustries": {
-      "cached_at": "2026-08-05",
-      "lot_size": 281
     },
     "armeeinfotech": {
       "cached_at": "2026-09-24",
