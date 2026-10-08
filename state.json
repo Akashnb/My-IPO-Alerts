@@ -1,7 +1,9 @@
 {
-  "alerted_ipos": [],
+  "alerted_ipos": [
+    "hdfireprotect"
+  ],
   "breakage_warned": false,
-  "date": "2026-10-07",
+  "date": "2026-10-08",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -60,8 +62,8 @@
       "last_seen": "2026-09-10"
     },
     "hdfireprotect": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-10-07"
+      "gmp_percent": 29.52,
+      "last_seen": "2026-10-08"
     },
     "heromotors": {
       "gmp_percent": 7.14,
