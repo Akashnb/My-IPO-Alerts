@@ -3,7 +3,7 @@
     "hdfireprotect"
   ],
   "breakage_warned": false,
-  "date": "2026-10-08",
+  "date": "2026-10-09",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -53,6 +53,10 @@
       "gmp_percent": 73.66,
       "last_seen": "2026-09-01"
     },
+    "fusioncx": {
+      "gmp_percent": 0.0,
+      "last_seen": "2026-10-09"
+    },
     "germangreensteel": {
       "gmp_percent": 17.98,
       "last_seen": "2026-09-29"
@@ -62,8 +66,8 @@
       "last_seen": "2026-09-10"
     },
     "hdfireprotect": {
-      "gmp_percent": 25.83,
-      "last_seen": "2026-10-08"
+      "gmp_percent": 23.25,
+      "last_seen": "2026-10-09"
     },
     "heromotors": {
       "gmp_percent": 7.14,
