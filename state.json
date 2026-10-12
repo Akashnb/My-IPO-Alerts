@@ -1,10 +1,7 @@
 {
-  "alerted_ipos": [
-    "fusioncx",
-    "hdfireprotect"
-  ],
+  "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-10-09",
+  "date": "2026-10-12",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -264,17 +261,9 @@
       "cached_at": "2026-09-09",
       "lot_size": 107
     },
-    "beharilalengineering": {
-      "cached_at": "2026-08-12",
-      "lot_size": 52
-    },
     "deepajewellers": {
       "cached_at": "2026-09-03",
       "lot_size": 84
-    },
-    "dhoottransmission": {
-      "cached_at": "2026-08-10",
-      "lot_size": 17
     },
     "esdssoftware": {
       "cached_at": "2026-08-28",
@@ -316,10 +305,6 @@
       "cached_at": "2026-09-09",
       "lot_size": 102
     },
-    "leapindia": {
-      "cached_at": "2026-08-10",
-      "lot_size": 94
-    },
     "luminoindustries": {
       "cached_at": "2026-08-28",
       "lot_size": 182
@@ -331,14 +316,6 @@
     "manipalpayment": {
       "cached_at": "2026-09-09",
       "lot_size": 44
-    },
-    "milkymist": {
-      "cached_at": "2026-08-12",
-      "lot_size": 107
-    },
-    "molbiodiagnostics": {
-      "cached_at": "2026-08-10",
-      "lot_size": 18
     },
     "moneyview": {
       "cached_at": "2026-09-24",
@@ -365,10 +342,6 @@
       "cached_at": "2026-09-09",
       "lot_size": 37
     },
-    "shiprocket": {
-      "cached_at": "2026-08-12",
-      "lot_size": 154
-    },
     "skywaysairservices": {
       "cached_at": "2026-08-26",
       "lot_size": 100
@@ -388,10 +361,6 @@
     "symbiotecpharmalab": {
       "cached_at": "2026-08-26",
       "lot_size": 15
-    },
-    "technocraftventures": {
-      "cached_at": "2026-08-10",
-      "lot_size": 70
     },
     "veegalanddevelopers": {
       "cached_at": "2026-09-10",
