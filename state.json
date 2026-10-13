@@ -1,7 +1,12 @@
 {
-  "alerted_ipos": [],
+  "alerted_ipos": [
+    "bonfigliolitransmiss",
+    "tonboimagingindia",
+    "sahajanandmedicaltec",
+    "zetwerk"
+  ],
   "breakage_warned": false,
-  "date": "2026-10-12",
+  "date": "2026-10-13",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -31,6 +36,10 @@
       "gmp_percent": 29.82,
       "last_seen": "2026-08-17"
     },
+    "bonfigliolitransmiss": {
+      "gmp_percent": 26.45,
+      "last_seen": "2026-10-13"
+    },
     "deepajewellers": {
       "gmp_percent": 15.82,
       "last_seen": "2026-09-03"
@@ -52,8 +61,8 @@
       "last_seen": "2026-09-01"
     },
     "fusioncx": {
-      "gmp_percent": 13.84,
-      "last_seen": "2026-10-09"
+      "gmp_percent": 6.57,
+      "last_seen": "2026-10-13"
     },
     "germangreensteel": {
       "gmp_percent": 17.98,
@@ -127,10 +136,6 @@
       "gmp_percent": 2.36,
       "last_seen": "2026-09-10"
     },
-    "milkymist": {
-      "gmp_percent": 15.71,
-      "last_seen": "2026-08-13"
-    },
     "molbiodiagnostics": {
       "gmp_percent": 15.74,
       "last_seen": "2026-09-02"
@@ -183,6 +188,10 @@
       "gmp_percent": 4.59,
       "last_seen": "2026-09-29"
     },
+    "sahajanandmedicaltec": {
+      "gmp_percent": 10.17,
+      "last_seen": "2026-10-13"
+    },
     "shahinvestorshome": {
       "gmp_percent": 8.38,
       "last_seen": "2026-09-29"
@@ -231,6 +240,10 @@
       "gmp_percent": 14.15,
       "last_seen": "2026-09-02"
     },
+    "tonboimagingindia": {
+      "gmp_percent": 60.71,
+      "last_seen": "2026-10-13"
+    },
     "varmoragranito": {
       "gmp_percent": 0.0,
       "last_seen": "2026-09-24"
@@ -242,6 +255,10 @@
     "vishalnirmiti": {
       "gmp_percent": 9.09,
       "last_seen": "2026-10-02"
+    },
+    "zetwerk": {
+      "gmp_percent": 10.6,
+      "last_seen": "2026-10-13"
     }
   },
   "lot_size_cache": {
