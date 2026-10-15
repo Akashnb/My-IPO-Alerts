@@ -1,10 +1,15 @@
 {
   "alerted_ipos": [
-    "zetwerk",
+    "bonfigliolitransmiss",
     "tonboimagingindia",
+    "hdfireprotect",
+    "sahajanandmedical",
+    "jioplatforms",
     "fusioncx",
-    "sahajanandmedicaltec",
-    "bonfigliolitransmiss"
+    "zetwerk",
+    "parashealthcare",
+    "tonboimaging",
+    "sahajanandmedicaltec"
   ],
   "breakage_warned": false,
   "date": "2026-10-15",
@@ -38,7 +43,7 @@
       "last_seen": "2026-08-17"
     },
     "bonfigliolitransmiss": {
-      "gmp_percent": 30.38,
+      "gmp_percent": 30.37,
       "last_seen": "2026-10-15"
     },
     "deepajewellers": {
@@ -62,7 +67,7 @@
       "last_seen": "2026-09-01"
     },
     "fusioncx": {
-      "gmp_percent": 11.42,
+      "gmp_percent": 11.76,
       "last_seen": "2026-10-15"
     },
     "germangreensteel": {
@@ -75,7 +80,7 @@
     },
     "hdfireprotect": {
       "gmp_percent": 33.58,
-      "last_seen": "2026-10-14"
+      "last_seen": "2026-10-15"
     },
     "heromotors": {
       "gmp_percent": 7.14,
@@ -96,6 +101,10 @@
     "jindalsupreme": {
       "gmp_percent": 32.26,
       "last_seen": "2026-09-18"
+    },
+    "jioplatforms": {
+      "gmp_percent": 20.02,
+      "last_seen": "2026-10-15"
     },
     "kanoharelectricals": {
       "gmp_percent": 35.44,
@@ -157,6 +166,10 @@
       "gmp_percent": 26.47,
       "last_seen": "2026-09-29"
     },
+    "parashealthcare": {
+      "gmp_percent": 17.32,
+      "last_seen": "2026-10-15"
+    },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
       "last_seen": "2026-08-27"
@@ -189,8 +202,12 @@
       "gmp_percent": 4.59,
       "last_seen": "2026-09-29"
     },
+    "sahajanandmedical": {
+      "gmp_percent": 12.21,
+      "last_seen": "2026-10-15"
+    },
     "sahajanandmedicaltec": {
-      "gmp_percent": 11.92,
+      "gmp_percent": 13.66,
       "last_seen": "2026-10-15"
     },
     "shahinvestorshome": {
@@ -241,6 +258,10 @@
       "gmp_percent": 14.15,
       "last_seen": "2026-09-02"
     },
+    "tonboimaging": {
+      "gmp_percent": 71.43,
+      "last_seen": "2026-10-15"
+    },
     "tonboimagingindia": {
       "gmp_percent": 71.43,
       "last_seen": "2026-10-15"
@@ -258,7 +279,7 @@
       "last_seen": "2026-10-02"
     },
     "zetwerk": {
-      "gmp_percent": 14.57,
+      "gmp_percent": 14.73,
       "last_seen": "2026-10-15"
     }
   },
