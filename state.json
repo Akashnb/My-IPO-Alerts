@@ -1,18 +1,13 @@
 {
   "alerted_ipos": [
-    "bonfigliolitransmiss",
+    "sahajanandmedicaltec",
     "tonboimagingindia",
-    "hdfireprotect",
-    "sahajanandmedical",
+    "bonfigliolitransmiss",
     "jioplatforms",
-    "fusioncx",
-    "zetwerk",
-    "parashealthcare",
-    "tonboimaging",
-    "sahajanandmedicaltec"
+    "parashealthcare"
   ],
   "breakage_warned": false,
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -43,8 +38,8 @@
       "last_seen": "2026-08-17"
     },
     "bonfigliolitransmiss": {
-      "gmp_percent": 30.37,
-      "last_seen": "2026-10-15"
+      "gmp_percent": 23.89,
+      "last_seen": "2026-10-16"
     },
     "deepajewellers": {
       "gmp_percent": 15.82,
@@ -103,8 +98,8 @@
       "last_seen": "2026-09-18"
     },
     "jioplatforms": {
-      "gmp_percent": 20.02,
-      "last_seen": "2026-10-15"
+      "gmp_percent": 19.75,
+      "last_seen": "2026-10-16"
     },
     "kanoharelectricals": {
       "gmp_percent": 35.44,
@@ -167,8 +162,8 @@
       "last_seen": "2026-09-29"
     },
     "parashealthcare": {
-      "gmp_percent": 17.32,
-      "last_seen": "2026-10-15"
+      "gmp_percent": 13.71,
+      "last_seen": "2026-10-16"
     },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
@@ -207,8 +202,8 @@
       "last_seen": "2026-10-15"
     },
     "sahajanandmedicaltec": {
-      "gmp_percent": 13.66,
-      "last_seen": "2026-10-15"
+      "gmp_percent": 12.5,
+      "last_seen": "2026-10-16"
     },
     "shahinvestorshome": {
       "gmp_percent": 8.38,
@@ -264,7 +259,7 @@
     },
     "tonboimagingindia": {
       "gmp_percent": 71.43,
-      "last_seen": "2026-10-15"
+      "last_seen": "2026-10-16"
     },
     "varmoragranito": {
       "gmp_percent": 0.0,
@@ -279,8 +274,8 @@
       "last_seen": "2026-10-02"
     },
     "zetwerk": {
-      "gmp_percent": 14.73,
-      "last_seen": "2026-10-15"
+      "gmp_percent": 9.27,
+      "last_seen": "2026-10-16"
     }
   },
   "lot_size_cache": {
