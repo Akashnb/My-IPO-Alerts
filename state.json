@@ -1,13 +1,10 @@
 {
   "alerted_ipos": [
-    "sahajanandmedicaltec",
-    "tonboimagingindia",
-    "bonfigliolitransmiss",
     "jioplatforms",
     "parashealthcare"
   ],
   "breakage_warned": false,
-  "date": "2026-10-16",
+  "date": "2026-10-19",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -32,10 +29,6 @@
     "assetreconstruction": {
       "gmp_percent": 13.13,
       "last_seen": "2026-09-10"
-    },
-    "beharilalengineering": {
-      "gmp_percent": 29.82,
-      "last_seen": "2026-08-17"
     },
     "bonfigliolitransmiss": {
       "gmp_percent": 23.04,
@@ -85,10 +78,6 @@
       "gmp_percent": 0.0,
       "last_seen": "2026-09-25"
     },
-    "horizonindustrialpar": {
-      "gmp_percent": 6.67,
-      "last_seen": "2026-08-17"
-    },
     "hytechengineers": {
       "gmp_percent": 56.6,
       "last_seen": "2026-08-26"
@@ -98,8 +87,8 @@
       "last_seen": "2026-09-18"
     },
     "jioplatforms": {
-      "gmp_percent": 20.11,
-      "last_seen": "2026-10-16"
+      "gmp_percent": 22.43,
+      "last_seen": "2026-10-19"
     },
     "kanoharelectricals": {
       "gmp_percent": 35.44,
@@ -112,10 +101,6 @@
     "kheriaautocomp": {
       "gmp_percent": 9.9,
       "last_seen": "2026-09-17"
-    },
-    "lalithaajewellerymar": {
-      "gmp_percent": 14.92,
-      "last_seen": "2026-08-17"
     },
     "lccprojects": {
       "gmp_percent": 32.53,
@@ -162,8 +147,8 @@
       "last_seen": "2026-09-29"
     },
     "parashealthcare": {
-      "gmp_percent": 13.56,
-      "last_seen": "2026-10-16"
+      "gmp_percent": 13.28,
+      "last_seen": "2026-10-19"
     },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
@@ -208,10 +193,6 @@
     "shahinvestorshome": {
       "gmp_percent": 8.38,
       "last_seen": "2026-09-29"
-    },
-    "shiprocket": {
-      "gmp_percent": 34.02,
-      "last_seen": "2026-08-17"
     },
     "skywaysairservices": {
       "gmp_percent": 21.01,
@@ -330,10 +311,6 @@
     "karamtaraengineering": {
       "cached_at": "2026-09-09",
       "lot_size": 59
-    },
-    "lalithaajewellerymar": {
-      "cached_at": "2026-08-17",
-      "lot_size": 74
     },
     "lccprojects": {
       "cached_at": "2026-09-09",
