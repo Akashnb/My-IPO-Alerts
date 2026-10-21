@@ -1,11 +1,9 @@
 {
   "alerted_ipos": [
-    "jioplatforms",
-    "parashealthcare",
-    "blspolymers"
+    "jioplatforms"
   ],
   "breakage_warned": false,
-  "date": "2026-10-20",
+  "date": "2026-10-21",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -92,8 +90,8 @@
       "last_seen": "2026-09-18"
     },
     "jioplatforms": {
-      "gmp_percent": 22.07,
-      "last_seen": "2026-10-20"
+      "gmp_percent": 24.66,
+      "last_seen": "2026-10-21"
     },
     "kanoharelectricals": {
       "gmp_percent": 35.44,
@@ -152,8 +150,8 @@
       "last_seen": "2026-09-29"
     },
     "parashealthcare": {
-      "gmp_percent": 10.82,
-      "last_seen": "2026-10-20"
+      "gmp_percent": 7.5,
+      "last_seen": "2026-10-21"
     },
     "perniaspopupstudio": {
       "gmp_percent": 0.0,
