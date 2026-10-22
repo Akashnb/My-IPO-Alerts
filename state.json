@@ -1,9 +1,9 @@
 {
   "alerted_ipos": [
-    "jioplatforms"
+    "blspolymers"
   ],
   "breakage_warned": false,
-  "date": "2026-10-21",
+  "date": "2026-10-22",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -30,8 +30,8 @@
       "last_seen": "2026-09-10"
     },
     "blspolymers": {
-      "gmp_percent": 18.0,
-      "last_seen": "2026-10-20"
+      "gmp_percent": 20.0,
+      "last_seen": "2026-10-22"
     },
     "bonfigliolitransmiss": {
       "gmp_percent": 23.04,
@@ -44,6 +44,10 @@
     "dhoottransmission": {
       "gmp_percent": 28.7,
       "last_seen": "2026-09-02"
+    },
+    "eaaaindiaalternative": {
+      "gmp_percent": 0.0,
+      "last_seen": "2026-10-22"
     },
     "elevatecampuses": {
       "gmp_percent": 0.83,
@@ -192,6 +196,10 @@
     "sahajanandmedicaltec": {
       "gmp_percent": 10.17,
       "last_seen": "2026-10-16"
+    },
+    "sfcenvironmentaltech": {
+      "gmp_percent": 9.39,
+      "last_seen": "2026-10-22"
     },
     "shahinvestorshome": {
       "gmp_percent": 8.38,
