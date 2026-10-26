@@ -1,7 +1,7 @@
 {
   "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-10-23",
+  "date": "2026-10-26",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -44,8 +44,8 @@
       "last_seen": "2026-09-02"
     },
     "eaaaindiaalternative": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-10-22"
+      "gmp_percent": 2.58,
+      "last_seen": "2026-10-26"
     },
     "elevatecampuses": {
       "gmp_percent": 0.83,
@@ -82,10 +82,6 @@
     "himalayansolar": {
       "gmp_percent": 0.0,
       "last_seen": "2026-09-25"
-    },
-    "hytechengineers": {
-      "gmp_percent": 56.6,
-      "last_seen": "2026-08-26"
     },
     "jindalsupreme": {
       "gmp_percent": 32.26,
@@ -203,10 +199,6 @@
       "gmp_percent": 8.38,
       "last_seen": "2026-09-29"
     },
-    "skywaysairservices": {
-      "gmp_percent": 21.01,
-      "last_seen": "2026-08-26"
-    },
     "sonaselectionindia": {
       "gmp_percent": 0.0,
       "last_seen": "2026-09-21"
@@ -234,10 +226,6 @@
     "swastikainfra": {
       "gmp_percent": 4.32,
       "last_seen": "2026-09-24"
-    },
-    "symbiotecpharmalab": {
-      "gmp_percent": 35.63,
-      "last_seen": "2026-08-26"
     },
     "technocraftventures": {
       "gmp_percent": 14.15,
@@ -305,10 +293,6 @@
       "cached_at": "2026-09-16",
       "lot_size": 178
     },
-    "hytechengineers": {
-      "cached_at": "2026-08-26",
-      "lot_size": 283
-    },
     "jindalsupreme": {
       "cached_at": "2026-09-16",
       "lot_size": 161
@@ -362,10 +346,6 @@
       "cached_at": "2026-09-09",
       "lot_size": 37
     },
-    "skywaysairservices": {
-      "cached_at": "2026-08-26",
-      "lot_size": 100
-    },
     "sritindia": {
       "cached_at": "2026-09-29",
       "lot_size": 115
@@ -377,10 +357,6 @@
     "steamhouseindia": {
       "cached_at": "2026-09-09",
       "lot_size": 185
-    },
-    "symbiotecpharmalab": {
-      "cached_at": "2026-08-26",
-      "lot_size": 15
     },
     "veegalanddevelopers": {
       "cached_at": "2026-09-10",
