@@ -1,7 +1,7 @@
 {
   "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-10-26",
+  "date": "2026-10-27",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -150,10 +150,6 @@
     "parashealthcare": {
       "gmp_percent": 6.49,
       "last_seen": "2026-10-21"
-    },
-    "perniaspopupstudio": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-08-27"
     },
     "pranavconstructions": {
       "gmp_percent": 35.48,
