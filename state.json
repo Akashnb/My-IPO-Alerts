@@ -4,7 +4,7 @@
     "bombaycoatedandspeci"
   ],
   "breakage_warned": false,
-  "date": "2026-10-27",
+  "date": "2026-10-28",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -13,10 +13,6 @@
     "adroitindustries": {
       "gmp_percent": 25.37,
       "last_seen": "2026-09-24"
-    },
-    "annuprojects": {
-      "gmp_percent": 7.07,
-      "last_seen": "2026-08-28"
     },
     "aonesteels": {
       "gmp_percent": 13.83,
@@ -31,12 +27,12 @@
       "last_seen": "2026-09-10"
     },
     "blspolymers": {
-      "gmp_percent": 27.0,
-      "last_seen": "2026-10-27"
+      "gmp_percent": 29.33,
+      "last_seen": "2026-10-28"
     },
     "bombaycoatedandspeci": {
       "gmp_percent": 10.98,
-      "last_seen": "2026-10-27"
+      "last_seen": "2026-10-28"
     },
     "bonfigliolitransmiss": {
       "gmp_percent": 23.04,
@@ -135,8 +131,8 @@
       "last_seen": "2026-09-10"
     },
     "mksonsfinejewels": {
-      "gmp_percent": 4.32,
-      "last_seen": "2026-10-27"
+      "gmp_percent": 6.17,
+      "last_seen": "2026-10-28"
     },
     "molbiodiagnostics": {
       "gmp_percent": 15.74,
@@ -199,8 +195,8 @@
       "last_seen": "2026-10-16"
     },
     "sfcenvironmentaltech": {
-      "gmp_percent": 6.06,
-      "last_seen": "2026-10-27"
+      "gmp_percent": 5.15,
+      "last_seen": "2026-10-28"
     },
     "shahinvestorshome": {
       "gmp_percent": 8.38,
@@ -284,10 +280,6 @@
       "cached_at": "2026-09-03",
       "lot_size": 84
     },
-    "esdssoftware": {
-      "cached_at": "2026-08-28",
-      "lot_size": 34
-    },
     "germangreensteel": {
       "cached_at": "2026-09-28",
       "lot_size": 107
@@ -316,10 +308,6 @@
       "cached_at": "2026-09-09",
       "lot_size": 102
     },
-    "luminoindustries": {
-      "cached_at": "2026-08-28",
-      "lot_size": 182
-    },
     "manikaplastech": {
       "cached_at": "2026-09-14",
       "lot_size": 348
@@ -340,10 +328,6 @@
     "pranavconstructions": {
       "cached_at": "2026-09-07",
       "lot_size": 120
-    },
-    "priorityjewels": {
-      "cached_at": "2026-08-28",
-      "lot_size": 75
     },
     "raysofbelief": {
       "cached_at": "2026-09-03",
