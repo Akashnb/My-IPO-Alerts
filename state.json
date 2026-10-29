@@ -1,5 +1,8 @@
 {
-  "alerted_ipos": [],
+  "alerted_ipos": [
+    "bombaycoatedandspeci",
+    "blspolymers"
+  ],
   "breakage_warned": false,
   "date": "2026-10-29",
   "gmp_history": {
@@ -24,12 +27,12 @@
       "last_seen": "2026-09-10"
     },
     "blspolymers": {
-      "gmp_percent": 29.33,
-      "last_seen": "2026-10-28"
+      "gmp_percent": 34.0,
+      "last_seen": "2026-10-29"
     },
     "bombaycoatedandspeci": {
       "gmp_percent": 10.98,
-      "last_seen": "2026-10-28"
+      "last_seen": "2026-10-29"
     },
     "bonfigliolitransmiss": {
       "gmp_percent": 23.04,
@@ -128,8 +131,8 @@
       "last_seen": "2026-09-10"
     },
     "mksonsfinejewels": {
-      "gmp_percent": 6.17,
-      "last_seen": "2026-10-28"
+      "gmp_percent": 9.26,
+      "last_seen": "2026-10-29"
     },
     "molbiodiagnostics": {
       "gmp_percent": 15.74,
@@ -192,8 +195,8 @@
       "last_seen": "2026-10-16"
     },
     "sfcenvironmentaltech": {
-      "gmp_percent": 5.15,
-      "last_seen": "2026-10-28"
+      "gmp_percent": 3.64,
+      "last_seen": "2026-10-29"
     },
     "shahinvestorshome": {
       "gmp_percent": 8.38,
