@@ -1,9 +1,7 @@
 {
-  "alerted_ipos": [
-    "bombaycoatedandspeci"
-  ],
+  "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-11-02",
+  "date": "2026-11-03",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -36,10 +34,6 @@
     "bonfigliolitransmiss": {
       "gmp_percent": 23.04,
       "last_seen": "2026-10-16"
-    },
-    "deepajewellers": {
-      "gmp_percent": 15.82,
-      "last_seen": "2026-09-03"
     },
     "eaaaindiaalternative": {
       "gmp_percent": 0.9,
@@ -141,10 +135,6 @@
       "gmp_percent": 5.91,
       "last_seen": "2026-09-10"
     },
-    "raysofbelief": {
-      "gmp_percent": 19.67,
-      "last_seen": "2026-09-03"
-    },
     "rentomojo": {
       "gmp_percent": 35.27,
       "last_seen": "2026-09-10"
@@ -239,10 +229,6 @@
       "cached_at": "2026-09-09",
       "lot_size": 107
     },
-    "deepajewellers": {
-      "cached_at": "2026-09-03",
-      "lot_size": 84
-    },
     "germangreensteel": {
       "cached_at": "2026-09-28",
       "lot_size": 107
@@ -291,10 +277,6 @@
     "pranavconstructions": {
       "cached_at": "2026-09-07",
       "lot_size": 120
-    },
-    "raysofbelief": {
-      "cached_at": "2026-09-03",
-      "lot_size": 62
     },
     "rentomojo": {
       "cached_at": "2026-09-09",
