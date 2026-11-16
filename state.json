@@ -1,7 +1,7 @@
 {
   "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-11-13",
+  "date": "2026-11-16",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -30,6 +30,10 @@
     "bonfigliolitransmiss": {
       "gmp_percent": 23.04,
       "last_seen": "2026-10-16"
+    },
+    "crystalcropprotectio": {
+      "gmp_percent": 5.51,
+      "last_seen": "2026-11-16"
     },
     "eaaaindiaalternative": {
       "gmp_percent": 0.9,
@@ -71,9 +75,9 @@
       "gmp_percent": 9.9,
       "last_seen": "2026-09-17"
     },
-    "manikaplastech": {
-      "gmp_percent": 6.98,
-      "last_seen": "2026-09-16"
+    "mahanadicoalfields": {
+      "gmp_percent": 5.15,
+      "last_seen": "2026-11-16"
     },
     "mksonsfinejewels": {
       "gmp_percent": 7.41,
@@ -151,10 +155,6 @@
       "gmp_percent": 0.0,
       "last_seen": "2026-09-24"
     },
-    "veegalanddevelopers": {
-      "gmp_percent": 10.71,
-      "last_seen": "2026-09-14"
-    },
     "vishalnirmiti": {
       "gmp_percent": 9.09,
       "last_seen": "2026-10-02"
@@ -181,18 +181,6 @@
       "cached_at": "2026-09-28",
       "lot_size": 107
     },
-    "heromotors": {
-      "cached_at": "2026-09-16",
-      "lot_size": 178
-    },
-    "jindalsupreme": {
-      "cached_at": "2026-09-16",
-      "lot_size": 161
-    },
-    "manikaplastech": {
-      "cached_at": "2026-09-14",
-      "lot_size": 348
-    },
     "moneyview": {
       "cached_at": "2026-09-24",
       "lot_size": 441
@@ -205,10 +193,6 @@
     "sritindia": {
       "cached_at": "2026-09-29",
       "lot_size": 115
-    },
-    "ssretail": {
-      "cached_at": "2026-09-16",
-      "lot_size": 35
     }
   },
   "zero_ipo_streak": 0
