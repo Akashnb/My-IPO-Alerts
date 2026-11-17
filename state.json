@@ -1,7 +1,7 @@
 {
   "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-11-16",
+  "date": "2026-11-17",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -33,7 +33,7 @@
     },
     "crystalcropprotectio": {
       "gmp_percent": 4.78,
-      "last_seen": "2026-11-16"
+      "last_seen": "2026-11-17"
     },
     "eaaaindiaalternative": {
       "gmp_percent": 0.9,
@@ -71,13 +71,9 @@
       "gmp_percent": 22.79,
       "last_seen": "2026-10-21"
     },
-    "kheriaautocomp": {
-      "gmp_percent": 9.9,
-      "last_seen": "2026-09-17"
-    },
     "mahanadicoalfields": {
-      "gmp_percent": 3.68,
-      "last_seen": "2026-11-16"
+      "gmp_percent": 2.57,
+      "last_seen": "2026-11-17"
     },
     "mksonsfinejewels": {
       "gmp_percent": 7.41,
@@ -126,10 +122,6 @@
     "sonaselectionindia": {
       "gmp_percent": 0.0,
       "last_seen": "2026-09-21"
-    },
-    "spectraatechnologyso": {
-      "gmp_percent": 25.42,
-      "last_seen": "2026-09-17"
     },
     "sritindia": {
       "gmp_percent": 25.38,
