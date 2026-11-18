@@ -1,7 +1,7 @@
 {
   "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-11-17",
+  "date": "2026-11-18",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -55,25 +55,17 @@
       "gmp_percent": 33.58,
       "last_seen": "2026-10-15"
     },
-    "heromotors": {
-      "gmp_percent": 7.14,
-      "last_seen": "2026-09-18"
-    },
     "himalayansolar": {
       "gmp_percent": 0.0,
       "last_seen": "2026-09-25"
-    },
-    "jindalsupreme": {
-      "gmp_percent": 32.26,
-      "last_seen": "2026-09-18"
     },
     "jioplatforms": {
       "gmp_percent": 22.79,
       "last_seen": "2026-10-21"
     },
     "mahanadicoalfields": {
-      "gmp_percent": 3.01,
-      "last_seen": "2026-11-17"
+      "gmp_percent": 2.76,
+      "last_seen": "2026-11-18"
     },
     "mksonsfinejewels": {
       "gmp_percent": 7.41,
@@ -126,10 +118,6 @@
     "sritindia": {
       "gmp_percent": 25.38,
       "last_seen": "2026-09-29"
-    },
-    "ssretail": {
-      "gmp_percent": 32.31,
-      "last_seen": "2026-09-18"
     },
     "swastikainfra": {
       "gmp_percent": 4.32,
