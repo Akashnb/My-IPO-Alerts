@@ -1,7 +1,7 @@
 {
   "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-11-19",
+  "date": "2026-11-20",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -33,7 +33,7 @@
     },
     "crystalcropprotectio": {
       "gmp_percent": 6.25,
-      "last_seen": "2026-11-19"
+      "last_seen": "2026-11-20"
     },
     "eaaaindiaalternative": {
       "gmp_percent": 0.9,
@@ -64,8 +64,8 @@
       "last_seen": "2026-10-21"
     },
     "mahanadicoalfields": {
-      "gmp_percent": 0.74,
-      "last_seen": "2026-11-19"
+      "gmp_percent": 1.47,
+      "last_seen": "2026-11-20"
     },
     "mksonsfinejewels": {
       "gmp_percent": 7.41,
