@@ -1,7 +1,7 @@
 {
   "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-11-20",
+  "date": "2026-11-23",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -79,10 +79,6 @@
       "gmp_percent": 4.0,
       "last_seen": "2026-10-02"
     },
-    "nse": {
-      "gmp_percent": 2.69,
-      "last_seen": "2026-09-21"
-    },
     "orientcables": {
       "gmp_percent": 26.47,
       "last_seen": "2026-09-29"
@@ -110,10 +106,6 @@
     "shahinvestorshome": {
       "gmp_percent": 8.38,
       "last_seen": "2026-09-29"
-    },
-    "sonaselectionindia": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-09-21"
     },
     "sritindia": {
       "gmp_percent": 25.38,
