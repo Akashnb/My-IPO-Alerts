@@ -1,5 +1,7 @@
 {
-  "alerted_ipos": [],
+  "alerted_ipos": [
+    "matangirubber"
+  ],
   "breakage_warned": false,
   "date": "2026-11-23",
   "gmp_history": {
@@ -43,6 +45,10 @@
       "gmp_percent": 0.83,
       "last_seen": "2026-09-24"
     },
+    "foodlinkfbholdings": {
+      "gmp_percent": 6.28,
+      "last_seen": "2026-11-23"
+    },
     "fusioncx": {
       "gmp_percent": 11.76,
       "last_seen": "2026-10-15"
@@ -66,6 +72,10 @@
     "mahanadicoalfields": {
       "gmp_percent": 0.74,
       "last_seen": "2026-11-20"
+    },
+    "matangirubber": {
+      "gmp_percent": 12.21,
+      "last_seen": "2026-11-23"
     },
     "mksonsfinejewels": {
       "gmp_percent": 7.41,
