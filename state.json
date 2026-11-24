@@ -3,23 +3,15 @@
     "matangirubber"
   ],
   "breakage_warned": false,
-  "date": "2026-11-23",
+  "date": "2026-11-24",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
       "last_seen": "2026-09-29"
     },
-    "adroitindustries": {
-      "gmp_percent": 25.37,
-      "last_seen": "2026-09-24"
-    },
     "aonesteels": {
       "gmp_percent": 13.83,
       "last_seen": "2026-09-28"
-    },
-    "armeeinfotech": {
-      "gmp_percent": 14.66,
-      "last_seen": "2026-09-24"
     },
     "blspolymers": {
       "gmp_percent": 34.0,
@@ -41,13 +33,9 @@
       "gmp_percent": 0.9,
       "last_seen": "2026-10-27"
     },
-    "elevatecampuses": {
-      "gmp_percent": 0.83,
-      "last_seen": "2026-09-24"
-    },
     "foodlinkfbholdings": {
-      "gmp_percent": 6.28,
-      "last_seen": "2026-11-23"
+      "gmp_percent": 7.85,
+      "last_seen": "2026-11-24"
     },
     "fusioncx": {
       "gmp_percent": 11.76,
@@ -74,8 +62,8 @@
       "last_seen": "2026-11-20"
     },
     "matangirubber": {
-      "gmp_percent": 12.21,
-      "last_seen": "2026-11-23"
+      "gmp_percent": 12.5,
+      "last_seen": "2026-11-24"
     },
     "mksonsfinejewels": {
       "gmp_percent": 7.41,
@@ -121,10 +109,6 @@
       "gmp_percent": 25.38,
       "last_seen": "2026-09-29"
     },
-    "swastikainfra": {
-      "gmp_percent": 4.32,
-      "last_seen": "2026-09-24"
-    },
     "tonboimaging": {
       "gmp_percent": 71.43,
       "last_seen": "2026-10-15"
@@ -132,10 +116,6 @@
     "tonboimagingindia": {
       "gmp_percent": 71.43,
       "last_seen": "2026-10-16"
-    },
-    "varmoragranito": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-09-24"
     },
     "vishalnirmiti": {
       "gmp_percent": 9.09,
@@ -147,25 +127,9 @@
     }
   },
   "lot_size_cache": {
-    "adroitindustries": {
-      "cached_at": "2026-09-24",
-      "lot_size": 111
-    },
-    "aonesteels": {
-      "cached_at": "2026-09-24",
-      "lot_size": 37
-    },
-    "armeeinfotech": {
-      "cached_at": "2026-09-24",
-      "lot_size": 40
-    },
     "germangreensteel": {
       "cached_at": "2026-09-28",
       "lot_size": 107
-    },
-    "moneyview": {
-      "cached_at": "2026-09-24",
-      "lot_size": 441
     },
     "mvelectrosystems": 34,
     "orientcables": {
