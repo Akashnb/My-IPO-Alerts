@@ -1,9 +1,7 @@
 {
-  "alerted_ipos": [
-    "matangirubber"
-  ],
+  "alerted_ipos": [],
   "breakage_warned": false,
-  "date": "2026-11-24",
+  "date": "2026-11-25",
   "gmp_history": {
     "acevector": {
       "gmp_percent": 6.25,
@@ -48,10 +46,6 @@
     "hdfireprotect": {
       "gmp_percent": 33.58,
       "last_seen": "2026-10-15"
-    },
-    "himalayansolar": {
-      "gmp_percent": 0.0,
-      "last_seen": "2026-09-25"
     },
     "jioplatforms": {
       "gmp_percent": 22.79,
